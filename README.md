@@ -32,7 +32,7 @@ ils serviront de spec pour la réécriture Rust.
 
 - [x] Ajouter des tests sur le tokenizer
 - [x] Implémenter un tokenizer pour le cœur de la config
-- [ ] Ajouter les commentaires dans le tokenizer
+- [x] Ajouter les commentaires dans le tokenizer
 - [ ] Écrire tous les tests vicieux imaginables
 
 **Parser :**

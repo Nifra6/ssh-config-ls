@@ -1,6 +1,7 @@
 """Read an SSH config content to extract tokens."""
 
 import re
+from dataclasses import dataclass
 from enum import StrEnum, auto
 
 from ssh_config_ls.exceptions import (
@@ -122,8 +123,18 @@ class Keyword(StrEnum):
     XAuthLocation = auto()
 
 
-LineToken = tuple[Keyword, list[str]]
-"""Token of a `Keyword`-argument line."""
+@dataclass(frozen=True)
+class KeywordArgToken:
+    """Token of a keyword-argument line."""
+
+    keyword: Keyword
+    args: list[str]
+    comment: str | None = None
+
+
+LineToken = str | KeywordArgToken
+"""Token of a non-empty line in SSH config."""
+
 
 # ------------------------------------------------------------
 # PUBLIC FUNCTIONS
@@ -141,9 +152,12 @@ def tokenize(content: str) -> list[LineToken]:
     """
     token_list = []
     for line in content.splitlines():
-        if _is_comment(line):
+        if line.strip() == "":
             continue
-        token_list.append(_split_line(line))
+        if _is_standalone_comment(line):
+            token_list.append(line.strip())
+        else:
+            token_list.append(_split_line(line))
     return token_list
 
 
@@ -152,16 +166,19 @@ def tokenize(content: str) -> list[LineToken]:
 # ------------------------------------------------------------
 
 
-def _is_comment(line: str) -> bool:
+def _is_standalone_comment(line: str) -> bool:
     """Check if the line is a comment.
 
     As explained in the [ssh_config](https://man.openbsd.org/ssh_config) manual:
     Lines starting with # and empty lines are interpreted as comments.
+
+    We choose to consider that only lines with # as first non-whitespace character
+        as a standalone comment and so tokenized.
     """
-    return line[0] == "#" or line.lstrip() == ""
+    return line.lstrip()[0] == "#"
 
 
-def _split_line(line: str) -> LineToken:
+def _split_line(line: str) -> KeywordArgToken:
     """Split a line as a keyword-argument pair.
 
     Args:
@@ -185,16 +202,17 @@ def _split_line(line: str) -> LineToken:
     match keyword:
         case Keyword.LocalCommand | Keyword.ProxyCommand | Keyword.RemoteCommand:
             args = [arg_line.strip()]
+            inline_comment = None
         case _:
-            args = _split_argument(arg_line)
+            args, inline_comment = _split_argument(arg_line)
 
     if len(args) == 0:
         raise NoArgumentAfterKeywordError
 
-    return (keyword, args)
+    return KeywordArgToken(keyword, args, inline_comment)
 
 
-def _split_argument(rest_of_line: str) -> list[str]:
+def _split_argument(rest_of_line: str) -> tuple[list[str], str | None]:
     """Split an argument from an SSH config line.
 
     Args:
@@ -205,9 +223,11 @@ def _split_argument(rest_of_line: str) -> list[str]:
     """
     args = []
     argument = ""
+    inline_comment = None
     in_quote = False
-    for ch in rest_of_line:
+    for i, ch in enumerate(rest_of_line):
         if ch == "#" and not in_quote:
+            inline_comment = rest_of_line[i:].strip()
             break
         if ch == " " and not in_quote:
             argument = argument.strip().strip('"')
@@ -223,4 +243,4 @@ def _split_argument(rest_of_line: str) -> list[str]:
     if argument != "":
         args.append(argument)
 
-    return args
+    return args, inline_comment
