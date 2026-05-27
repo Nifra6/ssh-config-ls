@@ -15,23 +15,43 @@ Little side project to start learning Rust and explore LSP.
 
 Objectif : valider la logique de parsing et de formatage sans se battre contre un nouveau langage.
 
+**Note :** Couvrir les cas limites (commentaires inline, blocs Host/Match, lignes vides
+multiples) et garder les tests sur le comportement observable (entrée/sortie texte) —
+ils serviront de spec pour la réécriture Rust.
+
 **Fonctionnalités à implémenter :**
 
-- Parser les blocs `Host` (et `Match`)
-- Gérer les directives `Include`
-- Normaliser l'indentation (4 espaces)
-- Canonicaliser la casse des clés (`hostname` → `Hostname`)
-- Trier les blocs (`*` en dernier)
-- Préserver les commentaires et lignes vides
+**Lexer :**
+
+- [x] Ajouter des tests sur le tokenizer
+- [x] Implémenter un tokenizer pour le cœur de la config
+- [ ] Ajouter les commentaires dans le tokenizer
+- [ ] Écrire tous les tests vicieux imaginables
+
+**Parser :**
+
+- [ ] Ajouter des tests sur le parser
+- [ ] Implémenter un parser
+- [ ] Parser les blocs `Host` et `Match`
+- [ ] Écrire tous les tests vicieux imaginables
+
+**Formatage :**
+
+- [ ] Préserver les commentaires et lignes vides
+- [ ] Normaliser l'indentation (4 espaces)
+- [ ] Canonicaliser la casse des clés (`hostname` → `Hostname`)
+- [ ] Écrire tous les tests vicieux imaginables
 
 **CLI :**
 
-- `ssh-fmt <file>` — formate en place
-- `ssh-fmt --check <file>` — retourne un exit code non-zéro si le fichier n'est pas formaté (utile pour CI)
-- `ssh-fmt --diff <file>` — affiche le diff
+- [ ] `ssh-fmt <file>` — formate en place
+- [ ] `ssh-fmt --check <file>` — exit code non-zéro si non formaté (CI)
+- [ ] `ssh-fmt --diff <file>` — affiche le diff
 
-**Tests :**
-Écrire des tests dès le début — ils serviront de spec pour la réécriture en Rust. Couvrir les cas limites : commentaires inline, blocs imbriqués, `Include`, lignes vides multiples.
+**Hors scope pour l'instant :**
+
+- [ ] Gérer les directives `Include`
+- [ ] Trier les blocs (`*` en dernier)
 
 ---
 
@@ -39,9 +59,9 @@ Objectif : valider la logique de parsing et de formatage sans se battre contre u
 
 Avant de réécrire, poser les bases du langage.
 
-- Lire les chapitres fondamentaux de [The Book](https://doc.rust-lang.org/book), en particulier sur l'ownership et les enums
-- Faire quelques exercices [Rustlings](https://github.com/rust-lang/rustlings) pour la syntaxe
-- Libs à connaître pour ce projet : `pest` ou `winnow` (parsing), `clap` (CLI)
+- [ ] Lire les chapitres fondamentaux de [The Book](https://doc.rust-lang.org/book), en particulier sur l'ownership et les enums
+- [ ] Faire quelques exercices [Rustlings](https://github.com/rust-lang/rustlings) pour la syntaxe
+- [ ] Libs à connaître pour ce projet : `pest` ou `winnow` (parsing), `clap` (CLI)
 
 ---
 
@@ -49,8 +69,8 @@ Avant de réécrire, poser les bases du langage.
 
 Réécrire le formateur en Rust en s'appuyant sur les tests Python comme spec.
 
-- Reprendre exactement les mêmes fonctionnalités et la même interface CLI
-- Les tests Python guident l'implémentation et valident la parité de comportement
+- [ ] Reprendre exactement les mêmes fonctionnalités et la même interface CLI
+- [ ] Les tests Python guident l'implémentation et valident la parité de comportement
 
 ---
 
@@ -58,8 +78,8 @@ Réécrire le formateur en Rust en s'appuyant sur les tests Python comme spec.
 
 Transformer le formateur en serveur LSP avec uniquement la capacité de formatage (`textDocument/formatting`).
 
-- Lib : [`tower-lsp`](https://github.com/ebkalderon/tower-lsp) pour abstraire le protocole JSON-RPC
-- Intégration Neovim via `vim.lsp.start()` ou `nvim-lspconfig` — pas de plugin dédié nécessaire
+- [ ] Lib : [`tower-lsp`](https://github.com/ebkalderon/tower-lsp) pour abstraire le protocole JSON-RPC
+- [ ] Intégration Neovim via `vim.lsp.start()` ou `nvim-lspconfig` — pas de plugin dédié nécessaire
 
 ---
 

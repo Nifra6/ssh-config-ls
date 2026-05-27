@@ -1,0 +1,47 @@
+[project]
+name = "ssh-config-ls"
+version = "0.1.0"
+description = "An SSH config formatter, usable as a Language Server Protocol (LSP) plugin."
+readme = "README.md"
+requires-python = ">=3.14"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Nicolas MAIGNAN", email = "nicolas.maignan@proton.me" }]
+dependencies = [
+  "pytest>=9.0.3",
+]
+
+[project.urls]
+Repository = "https://gitlab.com/nifra/ssh-config-formatter"
+
+[build-system]
+requires = ["uv_build>=0.11.15,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.pytest]
+addopts = ["--import-mode=importlib"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "FIX",  # Editors should highlight those, but dev notes mustn't block commit
+  "TD",  # TODO/FIXME tracking overkill for solo project
+  "COM812",  # Ruff formats trailing commas, so redundant
+  "PLC0415",  # Imports inside functions needed until Python supports lazy imports natively
+]
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+skip-magic-trailing-comma = true
