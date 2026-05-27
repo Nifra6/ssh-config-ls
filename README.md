@@ -3,6 +3,13 @@
 
 # SSH config formatter
 
+[![Python badge](https://img.shields.io/badge/Python-3.14+-0066cc?style=for-the-badge&logo=python&logoColor=yellow)](https://www.python.org/downloads/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://spdx.org/licenses/MIT.html)
+
+[![Packager: uv](https://gitlab.com/nifra/assets/-/raw/main/badges/uv.svg)](https://docs.astral.sh/uv/)
+[![Linter/Formatter: ruff](https://gitlab.com/nifra/assets/-/raw/main/badges/ruff.svg)](https://docs.astral.sh/ruff/)
+[![Type checker: ty](https://gitlab.com/nifra/assets/-/raw/main/badges/ty.svg)](https://docs.astral.sh/ty/)
+
 Little side project to start learning Rust and explore LSP.
 
 ---
