@@ -10,6 +10,7 @@ authors = [{ name = "Nicolas MAIGNAN", email = "nicolas.maignan@proton.me" }]
 dependencies = []
 
 [project.urls]
+Documentation = "https://ssh-config-formatter-2adfa2.gitlab.io"
 Repository = "https://gitlab.com/nifra/ssh-config-ls"
 
 [dependency-groups]
