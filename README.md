@@ -3,7 +3,7 @@
 
 # SSH config formatter
 
-[![Python badge](https://img.shields.io/badge/Python-3.14+-0066cc?style=for-the-badge&logo=python&logoColor=yellow)](https://www.python.org/downloads/)
+[![Python badge](https://img.shields.io/badge/Python-3.11+-0066cc?style=for-the-badge&logo=python&logoColor=yellow)](https://www.python.org/downloads/)
 [![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://spdx.org/licenses/MIT.html)
 
 [![Packager: uv](https://gitlab.com/nifra/assets/-/raw/main/badges/uv.svg)](https://docs.astral.sh/uv/)
