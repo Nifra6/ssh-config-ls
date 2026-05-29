@@ -55,6 +55,12 @@ ils serviront de spec pour la réécriture Rust.
 - [ ] `ssh-fmt --check <file>` — exit code non-zéro si non formaté (CI)
 - [ ] `ssh-fmt --diff <file>` — affiche le diff
 
+**LSP :**
+
+- [ ] Lib : [pygls](https://pygls.readthedocs.io/en/latest/)
+- [ ] Créer le serveur
+- [ ] Ajouter textDocument/formatting
+
 **Hors scope pour l'instant :**
 
 - [ ] Gérer les directives `Include`
