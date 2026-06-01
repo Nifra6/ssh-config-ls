@@ -10,24 +10,27 @@ from ssh_config_ls.exceptions import (
 from ssh_config_ls.tokenizer import Keyword, KeywordArgToken, LineToken, tokenize
 
 # ------------------------------------------------------------
+# CONSTANTS
+# ------------------------------------------------------------
+
+SINGLE_LINE_CASES: list[tuple[str, list[LineToken]]] = [
+    ("", []),
+    ("# An awesome comment", ["# An awesome comment"]),
+    ("  HostName 192.168.1.1", [KeywordArgToken(Keyword.Hostname, ["192.168.1.1"])]),
+    ("Port = 22", [KeywordArgToken(Keyword.Port, ["22"])]),
+    (
+        "Host myserver # inline comment",
+        [KeywordArgToken(Keyword.Host, ["myserver"], comment="# inline comment")],
+    ),
+]
+
+# ------------------------------------------------------------
 # HAPPY PATH
 # ------------------------------------------------------------
 
 
-@pytest.mark.parametrize(
-    ("line", "expected"),
-    [
-        ("", []),
-        ("# An awesome comment", ["# An awesome comment"]),
-        ("Host myserver", [KeywordArgToken(Keyword.Host, ["myserver"])]),
-        (
-            "  HostName 192.168.1.1",
-            [KeywordArgToken(Keyword.Hostname, ["192.168.1.1"])],
-        ),
-        ("Port 22", [KeywordArgToken(Keyword.Port, ["22"])]),
-    ],
-)
-def test_single_line(line: str, expected: LineToken) -> None:
+@pytest.mark.parametrize(("line", "expected"), SINGLE_LINE_CASES)
+def test_single_line(line: str, expected: list[LineToken]) -> None:
     assert tokenize(line) == expected
 
 
@@ -159,8 +162,8 @@ def test_unknown_keyword() -> None:
 # ------------------------------------------------------------
 
 
-def test_idempotent() -> None:
-    line = "Host myserver"
+@pytest.mark.parametrize(("line", "_"), SINGLE_LINE_CASES)
+def test_idempotent(line: str, _: list[LineToken]) -> None:
     assert tokenize(line) == tokenize(line)
 
 
@@ -175,17 +178,17 @@ def test_returns_list() -> None:
 
 def test_token_types() -> None:
     for token in tokenize("Host foo\n# comment"):
-        assert isinstance(token, KeywordArgToken | str)
+        assert isinstance(token, LineToken)
 
 
-@pytest.mark.parametrize(
-    "line", ["Host myserver # inline comment", "Port 22", "User = admin"]
-)
-def test_keyword_arg_token_fields(line: str) -> None:
+@pytest.mark.parametrize(("line", "_"), SINGLE_LINE_CASES[2:])
+def test_keyword_arg_token_fields(line: str, _: list[LineToken]) -> None:
     token = tokenize(line)[0]
     assert hasattr(token, "keyword")
     assert isinstance(token.keyword, Keyword)
     assert hasattr(token, "args")
     assert isinstance(token.args, list)
+    for arg in token.args:
+        assert isinstance(arg, str)
     assert hasattr(token, "comment")
     assert isinstance(token.comment, str | None)
