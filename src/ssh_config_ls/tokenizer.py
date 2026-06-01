@@ -132,7 +132,7 @@ class KeywordArgToken:
     comment: str | None = None
 
 
-LineToken = str | KeywordArgToken
+LineToken = KeywordArgToken | str
 """Token of a non-empty line in SSH config."""
 
 
