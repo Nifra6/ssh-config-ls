@@ -128,8 +128,11 @@ class KeywordArgToken:
     """Token of a keyword-argument line."""
 
     keyword: Keyword
+    """Token representing the keyword of the line."""
     args: list[str]
+    """Token representing the arguments of the line."""
     comment: str | None = None
+    """Token representing inline comment if presents."""
 
 
 LineToken = KeywordArgToken | str
@@ -169,7 +172,7 @@ def tokenize(content: str) -> list[LineToken]:
 def _is_standalone_comment(line: str) -> bool:
     """Check if the line is a comment.
 
-    As explained in the [ssh_config](https://man.openbsd.org/ssh_config) manual:
+    As explained in the [`ssh_config`](https://man.openbsd.org/ssh_config) manual:
     Lines starting with # and empty lines are interpreted as comments.
 
     We choose to consider that only lines with # as first non-whitespace character
