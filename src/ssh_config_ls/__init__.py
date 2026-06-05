@@ -3,6 +3,7 @@
 Modules
 
 - `ssh_config_ls.tokenizer` — tokenization of SSH config files.
+- `ssh_config_ls.parser` — parsing of SSH config tokens.
 - `ssh_config_ls.exceptions` — package exceptions.
 
 ## What is ssh-config-ls?

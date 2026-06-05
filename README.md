@@ -38,8 +38,8 @@ ils serviront de spec pour la réécriture Rust.
 **Parser :**
 
 - [ ] Ajouter des tests sur le parser
-- [ ] Implémenter un parser
-- [ ] Parser les blocs `Host` et `Match`
+- [x] Implémenter un parser
+- [x] Parser les blocs `Host` et `Match`
 - [ ] Écrire tous les tests vicieux imaginables
 
 **Formatage :**
