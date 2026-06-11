@@ -7,7 +7,7 @@ from ssh_config_ls.exceptions import (
     BadConfigurationOptionError,
     NoArgumentAfterKeywordError,
 )
-from ssh_config_ls.tokenizer import Keyword, KeywordArgToken, LineToken, tokenize
+from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken, tokenize
 
 # ------------------------------------------------------------
 # CONSTANTS

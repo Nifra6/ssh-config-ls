@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from ssh_config_ls.tokenizer import Keyword, KeywordArgToken, LineToken
+from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken
 
 # ------------------------------------------------------------
 # CLASSES

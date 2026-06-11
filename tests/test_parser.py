@@ -3,8 +3,8 @@
 
 import pytest
 
+from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken
 from ssh_config_ls.parser import GlobalBlock, HostBlock, SSHConfig, parse
-from ssh_config_ls.tokenizer import Keyword, KeywordArgToken, LineToken
 
 # ------------------------------------------------------------
 # HAPPY PATH
