@@ -16,9 +16,9 @@ Little side project to start learning Rust and explore LSP.
 
 <!-- LTeX: language=fr -->
 
-# Formateur de config SSH — Plan de projet
+## Formateur de config SSH — Plan de projet
 
-## Étape 1 — Prototype Python
+### Étape 1 — Prototype Python
 
 Objectif : valider la logique de parsing et de formatage sans se battre contre un nouveau langage.
 
@@ -44,9 +44,9 @@ ils serviront de spec pour la réécriture Rust.
 
 **Formatage :**
 
-- [ ] Préserver les commentaires et lignes vides
-- [ ] Normaliser l'indentation (4 espaces)
-- [ ] Canonicaliser la casse des clés (`hostname` → `Hostname`)
+- [x] Préserver les commentaires et automatises les lignes vides
+- [x] Normaliser l'indentation (4 espaces)
+- [x] Canonicaliser la casse des clés (`hostname` → `Hostname`)
 - [ ] Écrire tous les tests vicieux imaginables
 
 **CLI :**
@@ -68,7 +68,7 @@ ils serviront de spec pour la réécriture Rust.
 
 ---
 
-## Étape 2 — Apprentissage Rust
+### Étape 2 — Apprentissage Rust
 
 Avant de réécrire, poser les bases du langage.
 
@@ -78,7 +78,7 @@ Avant de réécrire, poser les bases du langage.
 
 ---
 
-## Étape 3 — Réécriture en Rust
+### Étape 3 — Réécriture en Rust
 
 Réécrire le formateur en Rust en s'appuyant sur les tests Python comme spec.
 
@@ -87,7 +87,7 @@ Réécrire le formateur en Rust en s'appuyant sur les tests Python comme spec.
 
 ---
 
-## Étape 4 — Serveur LSP
+### Étape 4 — Serveur LSP
 
 Transformer le formateur en serveur LSP avec uniquement la capacité de formatage (`textDocument/formatting`).
 
@@ -96,7 +96,7 @@ Transformer le formateur en serveur LSP avec uniquement la capacité de formatag
 
 ---
 
-## Références
+### Références
 
 - [The Rust Book](https://doc.rust-lang.org/book)
 - [Rustlings](https://github.com/rust-lang/rustlings)
