@@ -4,7 +4,7 @@ from collections.abc import Sequence
 from functools import partial
 
 from ssh_config_ls.lexer import Keyword, KeywordArgToken
-from ssh_config_ls.parser import GlobalBlock, HostBlock, MatchBlock, SSHConfig
+from ssh_config_ls.parser import GlobalBlock, HostBlock, MatchBlock, SSHBlock, SSHConfig
 
 # ------------------------------------------------------------
 # PUBLIC FUNCTIONS
@@ -24,47 +24,62 @@ def format_tree(
     Returns:
         The formatted SSH config as a string.
     """
-    formatted_blocks: list[str] = []
-
-    for block in tree.blocks:
-        if len(block.directives) == 0:
-            continue
-
-        indent_used = "" if isinstance(block, GlobalBlock) else indent
-        formatted_lines: list[str] = []
-        if isinstance(block, HostBlock):
-            formatted_lines.append(
-                _write_keyword_argument_line(
-                    Keyword.Host, block.patterns, block.comment
-                )
-            )
-        elif isinstance(block, MatchBlock):
-            formatted_lines.append(
-                _write_keyword_argument_line(
-                    Keyword.Match, (block.conditions), block.comment
-                )
-            )
-        for line in block.directives:
-            if isinstance(line, KeywordArgToken):
-                formatted_lines.append(
-                    _write_keyword_argument_line(
-                        line.keyword,
-                        line.args,
-                        line.comment,
-                        indent=indent_used,
-                        separator=separator,
-                    )
-                )
-            else:
-                formatted_lines.append(f"{indent_used}{line}")
-        formatted_blocks.append("\n".join(formatted_lines))
-
-    return "\n\n".join(formatted_blocks) + "\n"
+    return (
+        "\n\n".join(
+            [
+                _format_block(block, indent=indent, separator=separator)
+                for block in tree.blocks
+                if len(block.directives) > 0
+            ]
+        )
+        + "\n"
+    )
 
 
 # ------------------------------------------------------------
 # PRIVATE FUNCTIONS
 # ------------------------------------------------------------
+
+
+def _format_block(
+    block: SSHBlock, /, *, indent: str = "    ", separator: str = " "
+) -> str:
+    """Format an SSH config syntax block as a string.
+
+    Args:
+        block: A syntax block of the SSH config.
+        indent: Indentation applied to directives inside the block.
+        separator: Separator between keywords and their arguments.
+
+    Returns:
+        The formatted SSH config block as a string.
+    """
+    indent_used = "" if isinstance(block, GlobalBlock) else indent
+    formatted_lines: list[str] = []
+    if isinstance(block, HostBlock):
+        formatted_lines.append(
+            _write_keyword_argument_line(Keyword.Host, block.patterns, block.comment)
+        )
+    elif isinstance(block, MatchBlock):
+        formatted_lines.append(
+            _write_keyword_argument_line(
+                Keyword.Match, (block.conditions), block.comment
+            )
+        )
+    for line in block.directives:
+        if isinstance(line, KeywordArgToken):
+            formatted_lines.append(
+                _write_keyword_argument_line(
+                    line.keyword,
+                    line.args,
+                    line.comment,
+                    indent=indent_used,
+                    separator=separator,
+                )
+            )
+        else:
+            formatted_lines.append(f"{indent_used}{line}")
+    return "\n".join(formatted_lines)
 
 
 def _write_keyword_argument_line(

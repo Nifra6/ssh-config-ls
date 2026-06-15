@@ -39,11 +39,15 @@ class MatchBlock:
     comment: str | None = None
 
 
+SSHBlock = GlobalBlock | HostBlock | MatchBlock
+"""Block in a SSH config."""
+
+
 @dataclass(frozen=True)
 class SSHConfig:
     """Syntax tree representing an SSH configuration."""
 
-    blocks: tuple[GlobalBlock | HostBlock | MatchBlock, ...] = (GlobalBlock(()),)
+    blocks: tuple[SSHBlock, ...] = (GlobalBlock(()),)
 
 
 # ------------------------------------------------------------
@@ -85,7 +89,7 @@ def parse(tokens: Sequence[LineToken]) -> SSHConfig:
 
 def _flush_block(
     block_definition: KeywordArgToken | None, directives: Sequence[LineToken]
-) -> GlobalBlock | HostBlock | MatchBlock:
+) -> SSHBlock:
     """Construct a syntax block from an SSH config block.
 
     Args:
