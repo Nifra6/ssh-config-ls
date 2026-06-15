@@ -1,17 +1,22 @@
 [project]
 name = "ssh-config-ls"
-version = "0.5.0"
+version = "0.6.0"
 description = "An SSH config formatter, usable as a Language Server Protocol (LSP) plugin."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Nicolas MAIGNAN", email = "nicolas.maignan@proton.me" }]
-dependencies = []
+dependencies = [
+  "typer>=0.26.7",
+]
 
 [project.urls]
 Documentation = "https://ssh-config-formatter-2adfa2.gitlab.io"
 Repository = "https://gitlab.com/nifra/ssh-config-ls"
+
+[project.scripts]
+sshls = "ssh_config_ls.cli:app"
 
 [dependency-groups]
 dev = [

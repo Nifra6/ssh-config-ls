@@ -51,9 +51,9 @@ ils serviront de spec pour la réécriture Rust.
 
 **CLI :**
 
-- [ ] `ssh-fmt <file>` — formate en place
-- [ ] `ssh-fmt --check <file>` — exit code non-zéro si non formaté (CI)
-- [ ] `ssh-fmt --diff <file>` — affiche le diff
+- [x] `sshls format <file>` — formate en place
+- [ ] `sshls format --check <file>` — exit code non-zéro si non formaté (CI)
+- [ ] `sshls format --diff <file>` — affiche le diff
 
 **LSP :**
 
