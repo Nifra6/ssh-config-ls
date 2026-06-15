@@ -27,6 +27,9 @@ def format_tree(
     formatted_blocks: list[str] = []
 
     for block in tree.blocks:
+        if len(block.directives) == 0:
+            continue
+
         indent_used = "" if isinstance(block, GlobalBlock) else indent
         formatted_lines: list[str] = []
         if isinstance(block, HostBlock):
