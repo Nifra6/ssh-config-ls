@@ -5,11 +5,15 @@ from typing import Annotated
 
 import typer
 
+from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR
+
 # ------------------------------------------------------------
 # APPLICATION
 # ------------------------------------------------------------
 
-app = typer.Typer()
+app = typer.Typer(
+    help="An SSH config formatter, usable as a Language Server Protocol (LSP) plugin."
+)
 
 # ------------------------------------------------------------
 # COMMANDS
@@ -19,6 +23,12 @@ app = typer.Typer()
 @app.command(name="format")
 def cli_format_config(
     file: Annotated[Path, typer.Argument(help="Path to the config file.")],
+    indent: Annotated[
+        str, typer.Option(help="Indentation applied to directives inside a block.")
+    ] = DEFAULT_INDENT,
+    separator: Annotated[
+        str, typer.Option(help="Separator between keywords and their arguments.")
+    ] = DEFAULT_SEPARATOR,
 ) -> None:
     """Format an SSH config file."""
     from ssh_config_ls.formatter import format_tree
@@ -29,7 +39,7 @@ def cli_format_config(
 
     tokens = tokenize(content)
     syntax_tree = parse(tokens)
-    formatted_content = format_tree(syntax_tree)
+    formatted_content = format_tree(syntax_tree, indent=indent, separator=separator)
 
     with file.open("w") as f:
         f.write(formatted_content)

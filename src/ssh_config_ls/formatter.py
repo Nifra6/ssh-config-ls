@@ -1,10 +1,21 @@
 """Write a formatted SSH config from a syntax tree."""
 
+import re
 from collections.abc import Sequence
 from functools import partial
+from typing import Final
 
 from ssh_config_ls.lexer import Keyword, KeywordArgToken
 from ssh_config_ls.parser import GlobalBlock, HostBlock, MatchBlock, SSHBlock, SSHConfig
+
+# ------------------------------------------------------------
+# CONSTANTS
+# ------------------------------------------------------------
+
+DEFAULT_INDENT: Final[str] = "    "
+"""Default indent for Host and Match blocks directives."""
+DEFAULT_SEPARATOR: Final[str] = " "
+"""Default separator between a keyword and its arguments."""
 
 # ------------------------------------------------------------
 # PUBLIC FUNCTIONS
@@ -12,7 +23,11 @@ from ssh_config_ls.parser import GlobalBlock, HostBlock, MatchBlock, SSHBlock, S
 
 
 def format_tree(
-    tree: SSHConfig, /, *, indent: str = "    ", separator: str = " "
+    tree: SSHConfig,
+    /,
+    *,
+    indent: str = DEFAULT_INDENT,
+    separator: str = DEFAULT_SEPARATOR,
 ) -> str:
     """Format an SSH config syntax tree as a string.
 
@@ -24,6 +39,14 @@ def format_tree(
     Returns:
         The formatted SSH config as a string.
     """
+    if re.sub(r"\s*", "", indent) != "":
+        msg = f"Invalid indent {indent!r}: must contain only whitespace."
+        raise ValueError(msg)
+
+    if re.sub(r"\s*=\s*|\s+", "", separator) != "":
+        msg = f"Invalid separator {separator!r}: must be whitespace or '='."
+        raise ValueError(msg)
+
     return (
         "\n\n".join(
             [
@@ -42,7 +65,11 @@ def format_tree(
 
 
 def _format_block(
-    block: SSHBlock, /, *, indent: str = "    ", separator: str = " "
+    block: SSHBlock,
+    /,
+    *,
+    indent: str = DEFAULT_INDENT,
+    separator: str = DEFAULT_SEPARATOR,
 ) -> str:
     """Format an SSH config syntax block as a string.
 
@@ -58,12 +85,14 @@ def _format_block(
     formatted_lines: list[str] = []
     if isinstance(block, HostBlock):
         formatted_lines.append(
-            _write_keyword_argument_line(Keyword.Host, block.patterns, block.comment)
+            _write_keyword_argument_line(
+                Keyword.Host, block.patterns, block.comment, indent=""
+            )
         )
     elif isinstance(block, MatchBlock):
         formatted_lines.append(
             _write_keyword_argument_line(
-                Keyword.Match, (block.conditions), block.comment
+                Keyword.Match, (block.conditions), block.comment, indent=""
             )
         )
     for line in block.directives:
@@ -88,8 +117,8 @@ def _write_keyword_argument_line(
     comment: str | None,
     /,
     *,
-    indent: str = "",
-    separator: str = " ",
+    indent: str = DEFAULT_INDENT,
+    separator: str = DEFAULT_SEPARATOR,
 ) -> str:
     """Write a keyword-argument line of an SSH config.
 
