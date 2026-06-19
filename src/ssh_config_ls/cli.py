@@ -48,4 +48,6 @@ def cli_format_config(
 @app.command(name="server")
 def cli_start_server() -> None:
     """Start the SSH config language server."""
-    raise NotImplementedError
+    from ssh_config_ls.lsp import server
+
+    server.start_io()

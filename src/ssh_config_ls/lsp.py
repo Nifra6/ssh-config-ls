@@ -1,0 +1,65 @@
+"""Describe the Language Server."""
+
+from importlib.metadata import version
+
+from lsprotocol.types import (
+    TEXT_DOCUMENT_FORMATTING,
+    ConfigurationItem,
+    ConfigurationParams,
+    DocumentFormattingParams,
+    Position,
+    Range,
+    TextEdit,
+)
+from pygls.lsp.server import LanguageServer
+
+from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR, format_tree
+from ssh_config_ls.lexer import tokenize
+from ssh_config_ls.parser import parse
+
+# ------------------------------------------------------------
+# SERVER
+# ------------------------------------------------------------
+
+server = LanguageServer("ssh-config-ls", version("ssh_config_ls"))
+"""SSH config language server."""
+
+# ------------------------------------------------------------
+# CAPABILITIES
+# ------------------------------------------------------------
+
+
+@server.feature(TEXT_DOCUMENT_FORMATTING)
+async def format_document(
+    ls: LanguageServer, params: DocumentFormattingParams
+) -> list[TextEdit]:
+    """Format the whole document."""
+    config = await ls.workspace_configuration_async(
+        ConfigurationParams(items=[ConfigurationItem(section="formatter")])
+    )
+
+    formatter_config = config[0] or {}
+    indent = formatter_config.get("indent", DEFAULT_INDENT)
+    separator = formatter_config.get("separator", DEFAULT_SEPARATOR)
+
+    doc = ls.workspace.get_text_document(params.text_document.uri)
+    text = doc.source
+
+    formatted = format_tree(parse(tokenize(text)), indent=indent, separator=separator)
+
+    lines = text.splitlines()
+    if lines:
+        last_line = len(lines) - 1
+        last_char = len(lines[last_line])
+    else:
+        last_line, last_char = 0, 0
+
+    return [
+        TextEdit(
+            range=Range(
+                start=Position(line=0, character=0),
+                end=Position(line=last_line, character=last_char),
+            ),
+            new_text=formatted,
+        )
+    ]

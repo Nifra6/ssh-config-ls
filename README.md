@@ -1,4 +1,3 @@
-<!-- LTex: disable=false -->
 <!-- LTeX: language=en -->
 
 # SSH config formatter
@@ -11,6 +10,32 @@
 [![Type checker: ty](https://gitlab.com/nifra/assets/-/raw/main/badges/ty.svg)](https://docs.astral.sh/ty/)
 
 Little side project to start learning Rust and explore LSP.
+
+## ✨ Features
+
+- Formatting of SSH config files via the `sshfmt format` command
+- Language server started with `sshfmt server`, following the LSP protocol
+
+## 📦 Installation
+
+You can install the tool easily with `pipx` or `uv`:
+
+```sh
+uv tool install git+https://gitlab.com/nifra/ssh-config-ls
+```
+
+## 🔧 Configuration
+
+The language server accepts the following options from the client (e.g. Neovim):
+
+```lua
+{
+    formatter = {
+        indent = "    ",  -- Indentation for directives inside Host and Match blocks
+        separator = " ",  -- Separator between a keyword and its arguments
+    }
+}
+```
 
 ---
 
@@ -57,9 +82,9 @@ ils serviront de spec pour la réécriture Rust.
 
 **LSP :**
 
-- [ ] Lib : [pygls](https://pygls.readthedocs.io/en/latest/)
-- [ ] Créer le serveur
-- [ ] Ajouter textDocument/formatting
+- [x] Lib : [pygls](https://pygls.readthedocs.io/en/latest/)
+- [x] Créer le serveur
+- [x] Ajouter textDocument/formatting
 
 **Hors scope pour l'instant :**
 

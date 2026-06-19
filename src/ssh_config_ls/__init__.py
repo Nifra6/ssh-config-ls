@@ -3,6 +3,7 @@
 Modules
 
 - `ssh_config_ls.cli` — CLI to use implemented functionalities.
+- `ssh_config_ls.lsp` — language server declaration.
 - `ssh_config_ls.lexer` — tokenization of SSH config files.
 - `ssh_config_ls.parser` — parsing of SSH config tokens.
 - `ssh_config_ls.formatter` — formatting of SSH config tree.
