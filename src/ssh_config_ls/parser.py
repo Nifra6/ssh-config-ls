@@ -102,21 +102,38 @@ def _flush_block(
         The syntax block representing the structure of the config block.
     """
     if block_definition is None:
-        return GlobalBlock(tuple(directives))
+        return GlobalBlock(_sort_directives(directives))
 
     if block_definition.keyword == Keyword.Host:
         return HostBlock(
             tuple(block_definition.args),
-            tuple(directives),
+            _sort_directives(directives),
             comment=block_definition.comment,
         )
 
     if block_definition.keyword == Keyword.Match:
         return MatchBlock(
             " ".join(block_definition.args),
-            tuple(directives),
+            _sort_directives(directives),
             comment=block_definition.comment,
         )
 
     msg = f"Expected Host or Match keyword, got {block_definition.keyword}"
     raise ValueError(msg)
+
+
+def _sort_directives(directives: Sequence[Directive]) -> tuple[Directive, ...]:
+    """Sort directives by keyword order if no standalone comment is present.
+
+    Args:
+        directives: Sequence of directive tokens (keyword-argument lines or
+            standalone comments) from a parsed block.
+
+    Returns:
+        The directives sorted by keyword declaration order if no standalone
+        comment is present, otherwise the original sequence as a tuple.
+    """
+    if not any(isinstance(line, str) for line in directives):
+        keyword_order = list(Keyword)
+        return tuple(sorted(directives, key=lambda k: keyword_order.index(k.keyword)))
+    return tuple(directives)
