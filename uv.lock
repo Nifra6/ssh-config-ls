@@ -301,7 +301,7 @@ wheels = [
 
 [[package]]
 name = "ssh-config-ls"
-version = "0.7.0"
+version = "0.7.1"
 source = { editable = "." }
 dependencies = [
     { name = "pygls" },

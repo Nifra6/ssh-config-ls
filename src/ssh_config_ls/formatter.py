@@ -47,15 +47,12 @@ def format_tree(
         msg = f"Invalid separator {separator!r}: must be whitespace or '='."
         raise ValueError(msg)
 
-    return (
-        "\n\n".join(
-            [
-                _format_block(block, indent=indent, separator=separator)
-                for block in tree.blocks
-                if len(block.directives) > 0
-            ]
-        )
-        + "\n"
+    return "\n\n".join(
+        [
+            _format_block(block, indent=indent, separator=separator)
+            for block in tree.blocks
+            if len(block.directives) > 0
+        ]
     )
 
 

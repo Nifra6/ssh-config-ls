@@ -15,7 +15,7 @@ from ssh_config_ls.parser import GlobalBlock, HostBlock, SSHConfig
 @pytest.mark.parametrize(
     ("tree", "expected"),
     [
-        (SSHConfig(), "\n"),
+        (SSHConfig(), ""),
         (
             SSHConfig(
                 (
@@ -30,8 +30,7 @@ from ssh_config_ls.parser import GlobalBlock, HostBlock, SSHConfig
                 )
             ),
             """IdentityFile "/home/user/my key"
-User secret_user
-""",
+User secret_user""",
         ),
         (
             SSHConfig(
@@ -47,8 +46,7 @@ User secret_user
             """Port 22
 
 Host myserver # inline comment
-    Hostname 192.168.1.1
-""",
+    Hostname 192.168.1.1""",
         ),
     ],
 )
