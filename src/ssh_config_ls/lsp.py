@@ -46,11 +46,14 @@ async def format_document(
     doc = ls.workspace.get_text_document(params.text_document.uri)
     text = doc.source
 
-    formatted = format_tree(
-        parse(tokenize(text), sort_directives=sort_directives),
-        indent=indent,
-        separator=separator,
-    )
+    try:
+        formatted = format_tree(
+            parse(tokenize(text), sort_directives=sort_directives),
+            indent=indent,
+            separator=separator,
+        )
+    except ValueError:
+        return []
 
     lines = text.splitlines()
     if lines:
