@@ -13,8 +13,8 @@ Little side project to start learning Rust and explore LSP.
 
 ## ✨ Features
 
-- Formatting of SSH config files via the `sshfmt format` command
-- Language server started with `sshfmt server`, following the LSP protocol
+- Formatting of SSH config files via the `sshls format` command
+- Language server started with `sshls server`, following the LSP protocol
 
 ## 📦 Installation
 
