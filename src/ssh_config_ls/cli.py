@@ -12,7 +12,8 @@ from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR
 # ------------------------------------------------------------
 
 app = typer.Typer(
-    help="An SSH config formatter, usable as a Language Server Protocol (LSP) plugin."
+    help="An SSH config formatter, usable as a Language Server Protocol (LSP) plugin.",
+    no_args_is_help=True,
 )
 
 # ------------------------------------------------------------
@@ -20,7 +21,7 @@ app = typer.Typer(
 # ------------------------------------------------------------
 
 
-@app.command(name="format")
+@app.command(name="format", no_args_is_help=True)
 def cli_format_config(
     file: Annotated[Path, typer.Argument(help="Path to the config file.")],
     indent: Annotated[
