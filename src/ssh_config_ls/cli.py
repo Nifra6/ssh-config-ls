@@ -4,7 +4,9 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
+from rich import print as rich_print
 
+from ssh_config_ls import __version__
 from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR
 from ssh_config_ls.parser import DEFAULT_SORT
 
@@ -56,3 +58,9 @@ def cli_start_server() -> None:
     from ssh_config_ls.lsp import server
 
     server.start_io()
+
+
+@app.command(name="version")
+def cli_version() -> None:
+    """Display sshls's version."""
+    rich_print(__version__)
