@@ -33,3 +33,13 @@ pages:
     - pip install . pdoc
   script:
     - pdoc -o public -d google --no-include-undocumented --logo https://gitlab.com/uploads/-/system/project/avatar/82167111/logo.png --logo-link https://gitlab.com/nifra/ssh-config-ls ssh_config_ls
+
+
+publish:
+  stage: deploy
+  image: ghcr.io/astral-sh/uv:alpine
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - uv build
+    - uv publish
