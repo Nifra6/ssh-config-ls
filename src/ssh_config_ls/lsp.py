@@ -15,7 +15,7 @@ from pygls.lsp.server import LanguageServer
 
 from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR, format_tree
 from ssh_config_ls.lexer import tokenize
-from ssh_config_ls.parser import parse
+from ssh_config_ls.parser import DEFAULT_SORT, parse
 
 # ------------------------------------------------------------
 # SERVER
@@ -41,11 +41,16 @@ async def format_document(
     formatter_config = config[0] or {}
     indent = formatter_config.get("indent", DEFAULT_INDENT)
     separator = formatter_config.get("separator", DEFAULT_SEPARATOR)
+    sort_directives = formatter_config.get("sort_directives", DEFAULT_SORT)
 
     doc = ls.workspace.get_text_document(params.text_document.uri)
     text = doc.source
 
-    formatted = format_tree(parse(tokenize(text)), indent=indent, separator=separator)
+    formatted = format_tree(
+        parse(tokenize(text), sort_directives=sort_directives),
+        indent=indent,
+        separator=separator,
+    )
 
     lines = text.splitlines()
     if lines:

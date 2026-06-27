@@ -6,6 +6,7 @@ from typing import Annotated
 import typer
 
 from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR
+from ssh_config_ls.parser import DEFAULT_SORT
 
 # ------------------------------------------------------------
 # APPLICATION
@@ -30,6 +31,9 @@ def cli_format_config(
     separator: Annotated[
         str, typer.Option(help="Separator between keywords and their arguments.")
     ] = DEFAULT_SEPARATOR,
+    sort_directives: Annotated[
+        bool, typer.Option(help="Indentation applied to directives inside a block.")
+    ] = DEFAULT_SORT,
 ) -> None:
     """Format an SSH config file."""
     from ssh_config_ls.formatter import format_tree
@@ -39,7 +43,7 @@ def cli_format_config(
     content = file.read_text()
 
     tokens = tokenize(content)
-    syntax_tree = parse(tokens)
+    syntax_tree = parse(tokens, sort_directives=sort_directives)
     formatted_content = format_tree(syntax_tree, indent=indent, separator=separator)
 
     with file.open("w") as f:

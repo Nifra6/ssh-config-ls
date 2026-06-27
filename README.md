@@ -33,6 +33,7 @@ The language server accepts the following options from the client (e.g. Neovim):
     formatter = {
         indent = "    ",  -- Indentation for directives inside Host and Match blocks
         separator = " ",  -- Separator between a keyword and its arguments
+        sort_directives = true, -- Sort directives within blocks
     }
 }
 ```

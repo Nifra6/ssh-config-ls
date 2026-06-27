@@ -2,8 +2,17 @@
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from typing import Final
 
 from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken
+
+# ------------------------------------------------------------
+# CONSTANTS
+# ------------------------------------------------------------
+
+DEFAULT_SORT: Final[bool] = True
+"""Sort blocks directives by default."""
+
 
 # ------------------------------------------------------------
 # CLASSES
@@ -55,11 +64,14 @@ class SSHConfig:
 # ------------------------------------------------------------
 
 
-def parse(tokens: Sequence[LineToken]) -> SSHConfig:
+def parse(
+    tokens: Sequence[LineToken], /, *, sort_directives: bool = DEFAULT_SORT
+) -> SSHConfig:
     """Construct a syntax tree from the tokens of an SSH config.
 
     Args:
         tokens: Tokens representing lines of an SSH config.
+        sort_directives: Sort directives within parsed blocks.
 
     Returns:
         The syntax tree of the SSH config.
@@ -72,12 +84,18 @@ def parse(tokens: Sequence[LineToken]) -> SSHConfig:
         if isinstance(tok, str):
             current_directives.append(tok)
         elif tok.keyword in (Keyword.Host, Keyword.Match):
-            blocks.append(_flush_block(current_block, current_directives))
+            blocks.append(
+                _flush_block(
+                    current_block, current_directives, sort_directives=sort_directives
+                )
+            )
             current_directives = []
             current_block = tok
         else:
             current_directives.append(tok)
-    blocks.append(_flush_block(current_block, current_directives))
+    blocks.append(
+        _flush_block(current_block, current_directives, sort_directives=sort_directives)
+    )
 
     return SSHConfig(tuple(blocks))
 
@@ -88,7 +106,11 @@ def parse(tokens: Sequence[LineToken]) -> SSHConfig:
 
 
 def _flush_block(
-    block_definition: KeywordArgToken | None, directives: Sequence[LineToken]
+    block_definition: KeywordArgToken | None,
+    directives: Sequence[LineToken],
+    /,
+    *,
+    sort_directives: bool = True,
 ) -> SSHBlock:
     """Construct a syntax block from an SSH config block.
 
@@ -97,24 +119,27 @@ def _flush_block(
             None if it is the global block of the config.
         directives: Keyword-argument tokens and standalone comments
             belonging to the block.
+        sort_directives: Sort directives in the block.
 
     Returns:
         The syntax block representing the structure of the config block.
     """
+    sort = _sort_directives if sort_directives else tuple
+
     if block_definition is None:
-        return GlobalBlock(_sort_directives(directives))
+        return GlobalBlock(sort(directives))
 
     if block_definition.keyword == Keyword.Host:
         return HostBlock(
             tuple(block_definition.args),
-            _sort_directives(directives),
+            sort(directives),
             comment=block_definition.comment,
         )
 
     if block_definition.keyword == Keyword.Match:
         return MatchBlock(
             " ".join(block_definition.args),
-            _sort_directives(directives),
+            sort(directives),
             comment=block_definition.comment,
         )
 
