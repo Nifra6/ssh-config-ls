@@ -56,6 +56,27 @@ def test_classic_trees(tree: SSHConfig, expected: str) -> None:
 
 
 # ------------------------------------------------------------
+# ERROR HANDLING
+# ------------------------------------------------------------
+
+
+@pytest.mark.parametrize("indent", ["  la  ", " = ", "~~"])
+def test_incorrect_indent(indent: str) -> None:
+    with pytest.raises(
+        ValueError, match=f"Invalid indent {indent!r}: must contain only whitespace."
+    ):
+        format_tree(EXEMPLES[0][0], indent=indent)
+
+
+@pytest.mark.parametrize("separator", ["  ==  ", "    : ", "<-"])
+def test_incorrect_separator(separator: str) -> None:
+    with pytest.raises(
+        ValueError, match=f"Invalid separator {separator!r}: must be whitespace or '='."
+    ):
+        format_tree(EXEMPLES[0][0], separator=separator)
+
+
+# ------------------------------------------------------------
 # IDEMPOTENCY
 # ------------------------------------------------------------
 
