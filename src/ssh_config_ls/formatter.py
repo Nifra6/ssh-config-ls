@@ -39,11 +39,11 @@ def format_tree(
     Returns:
         The formatted SSH config as a string.
     """
-    if re.sub(r"\s*", "", indent) != "":
+    if not re.fullmatch(r"\s*", indent):
         msg = f"Invalid indent {indent!r}: must contain only whitespace."
         raise ValueError(msg)
 
-    if re.sub(r"\s*=\s*|\s+", "", separator) != "":
+    if not re.fullmatch(r"\s*=\s*|\s+", separator):
         msg = f"Invalid separator {separator!r}: must be whitespace or '='."
         raise ValueError(msg)
 
@@ -152,10 +152,10 @@ def _quote_arg_if_needed(keyword: Keyword, arg: str) -> str:
         The argument wrapped in double quotes if it contains whitespace,
         unchanged otherwise.
     """
-    if (
-        keyword
-        not in (Keyword.LocalCommand, Keyword.ProxyCommand, Keyword.RemoteCommand)
-        and " " in arg
-    ):
+    if keyword not in (
+        Keyword.LocalCommand,
+        Keyword.ProxyCommand,
+        Keyword.RemoteCommand,
+    ) and (" " in arg or arg[0] == "="):
         return f'"{arg}"'
     return arg
