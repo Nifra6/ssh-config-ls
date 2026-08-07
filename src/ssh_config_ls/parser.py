@@ -160,5 +160,5 @@ def _sort_directives(directives: Sequence[Directive]) -> tuple[Directive, ...]:
     """
     if not any(isinstance(line, str) for line in directives):
         keyword_order = list(Keyword)
-        return tuple(sorted(directives, key=lambda k: keyword_order.index(k.keyword)))
+        return tuple(sorted(directives, key=lambda k: keyword_order.index(k.keyword)))  # ty: ignore[unresolved-attribute]
     return tuple(directives)

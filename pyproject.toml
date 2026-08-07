@@ -42,6 +42,7 @@ indent-width = 4
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
+  "CPY001",  # I do not care about copyrights, LICENSE files exists.
   "FIX",  # Editors should highlight those, but dev notes mustn't block commit
   "TD",  # TODO/FIXME tracking overkill for solo project
   "COM812",  # Ruff formats trailing commas, so redundant
