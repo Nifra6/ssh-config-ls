@@ -2,6 +2,7 @@
 
 from importlib.metadata import version
 
+from lsprotocol import types
 from lsprotocol.types import (
     TEXT_DOCUMENT_FORMATTING,
     ConfigurationItem,
@@ -13,6 +14,7 @@ from lsprotocol.types import (
 )
 from pygls.lsp.server import LanguageServer
 
+from ssh_config_ls.completion import get_completion
 from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR, format_tree
 from ssh_config_ls.lexer import tokenize
 from ssh_config_ls.parser import DEFAULT_SORT, parse
@@ -71,3 +73,12 @@ async def format_document(
             new_text=formatted,
         )
     ]
+
+
+@server.feature(types.TEXT_DOCUMENT_COMPLETION)
+def completion(params: types.CompletionParams) -> list[types.CompletionItem]:
+    """Provide completions for a keyword."""
+    document = server.workspace.get_text_document(params.text_document.uri)
+    current_line = document.lines[params.position.line]
+
+    return [types.CompletionItem(label=word) for word in get_completion(current_line)]

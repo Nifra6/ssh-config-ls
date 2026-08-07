@@ -7,6 +7,7 @@ Modules
 - `ssh_config_ls.lexer` — tokenization of SSH config files.
 - `ssh_config_ls.parser` — parsing of SSH config tokens.
 - `ssh_config_ls.formatter` — formatting of SSH config tree.
+- `ssh_config_ls.completion` — completions solver.
 - `ssh_config_ls.exceptions` — package exceptions.
 
 ## What is ssh-config-ls?
