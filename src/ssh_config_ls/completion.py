@@ -1,5 +1,7 @@
 """Provide completions for words in an SSH config."""
 
+import re
+
 from ssh_config_ls.lexer import Keyword
 
 # ------------------------------------------------------------
@@ -7,18 +9,19 @@ from ssh_config_ls.lexer import Keyword
 # ------------------------------------------------------------
 
 
-def get_completion(line: str) -> list[str]:
+def get_completion(line: str, position: int) -> list[str]:
     """Get all completions for a word.
 
     Args:
         line: A line from an SSH config.
+        position: Position of the cursor.
 
     Returns:
         All possible completions for the current word.
     """
-    words = line.split()
-    if len(words) == 1:
-        return _get_possible_keywords(words[0])
+    word = re.search(r"\S+", line)
+    if word and word.start() <= position <= word.end():
+        return _get_possible_keywords(word.group())
     return []
 
 

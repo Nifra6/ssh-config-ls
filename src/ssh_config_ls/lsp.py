@@ -81,4 +81,7 @@ def completion(params: types.CompletionParams) -> list[types.CompletionItem]:
     document = server.workspace.get_text_document(params.text_document.uri)
     current_line = document.lines[params.position.line]
 
-    return [types.CompletionItem(label=word) for word in get_completion(current_line)]
+    return [
+        types.CompletionItem(label=word)
+        for word in get_completion(current_line, params.position.character)
+    ]
