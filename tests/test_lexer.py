@@ -16,11 +16,11 @@ from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken, tokenize
 SINGLE_LINE_CASES: list[tuple[str, list[LineToken]]] = [
     ("", []),
     ("# An awesome comment", ["# An awesome comment"]),
-    ("  HostName 192.168.1.1", [KeywordArgToken(Keyword.Hostname, ["192.168.1.1"])]),
-    ("Port = 22", [KeywordArgToken(Keyword.Port, ["22"])]),
+    ("  HostName 192.168.1.1", [KeywordArgToken(0, Keyword.Hostname, ["192.168.1.1"])]),
+    ("Port = 22", [KeywordArgToken(0, Keyword.Port, ["22"])]),
     (
         "Host myserver # inline comment",
-        [KeywordArgToken(Keyword.Host, ["myserver"], comment="# inline comment")],
+        [KeywordArgToken(0, Keyword.Host, ["myserver"], comment="# inline comment")],
     ),
 ]
 
@@ -37,12 +37,12 @@ def test_single_line(line: str, expected: list[LineToken]) -> None:
 @pytest.mark.parametrize("line", ["Port=22", "Port =22", "Port= 22", "Port = 22"])
 def test_equals_separator(line: str) -> None:
     token = tokenize(line)
-    assert token[0] == KeywordArgToken(Keyword.Port, ["22"])
+    assert token[0] == KeywordArgToken(0, Keyword.Port, ["22"])
 
 
 def test_quoted_value() -> None:
     tokens = tokenize('IdentityFile "/home/user/my key"')
-    assert KeywordArgToken(Keyword.IdentityFile, ["/home/user/my key"]) in tokens
+    assert KeywordArgToken(0, Keyword.IdentityFile, ["/home/user/my key"]) in tokens
 
 
 @pytest.mark.parametrize(
@@ -117,7 +117,7 @@ def test_special_characters_in_value(line: str, expected_value: list[str]) -> No
 
 def test_include_glob() -> None:
     tokens = tokenize("Include ~/.ssh/conf.d/*.conf")
-    assert tokens[0] == KeywordArgToken(Keyword.Include, ["~/.ssh/conf.d/*.conf"])
+    assert tokens[0] == KeywordArgToken(0, Keyword.Include, ["~/.ssh/conf.d/*.conf"])
 
 
 @pytest.mark.parametrize(

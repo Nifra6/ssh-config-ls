@@ -7,6 +7,7 @@ from enum import StrEnum, auto
 from ssh_config_ls.exceptions import (
     BadConfigurationOptionError,
     NoArgumentAfterKeywordError,
+    SSHConfigError,
 )
 
 # ------------------------------------------------------------
@@ -127,6 +128,8 @@ class Keyword(StrEnum):
 class KeywordArgToken:
     """Token of a keyword-argument line."""
 
+    line_number: int
+    """Line number in the document."""
     keyword: Keyword
     """Token representing the keyword of the line."""
     args: list[str]
@@ -154,14 +157,37 @@ def tokenize(content: str) -> list[LineToken]:
         All keyword-argument lines from the content read as tokens.
     """
     token_list = []
-    for line in content.splitlines():
+    for i, line in enumerate(content.splitlines()):
         if line.strip() == "":
             continue
         if _is_standalone_comment(line):
             token_list.append(line.strip())
         else:
-            token_list.append(_split_line(line))
+            token_list.append(_split_line(line, i))
     return token_list
+
+
+def tokenize_with_errors(content: str) -> tuple[list[LineToken], list[SSHConfigError]]:
+    """Read a SSH config content to extract tokens.
+
+    Args:
+        content: The content of an SSH config file.
+
+    Returns:
+        All keyword-argument lines from the content read as tokens.
+    """
+    token_list, errors = [], []
+    for i, line in enumerate(content.splitlines()):
+        if line.strip() == "":
+            continue
+        if _is_standalone_comment(line):
+            token_list.append(line.strip())
+        else:
+            try:
+                token_list.append(_split_line(line, i))
+            except SSHConfigError as e:
+                errors.append(e)
+    return token_list, errors
 
 
 # ------------------------------------------------------------
@@ -181,11 +207,12 @@ def _is_standalone_comment(line: str) -> bool:
     return line.lstrip()[0] == "#"
 
 
-def _split_line(line: str) -> KeywordArgToken:
+def _split_line(line: str, line_number: int) -> KeywordArgToken:
     """Split a line as a keyword-argument pair.
 
     Args:
         line: A keyword-argument line from an SSH config.
+        line_number: Line number in the source configuration file.
 
     Returns:
         The line as a `Keyword`-argument token.
@@ -195,12 +222,15 @@ def _split_line(line: str) -> KeywordArgToken:
     try:
         keyword = Keyword(words[0].lower())
     except ValueError as e:
-        raise BadConfigurationOptionError from e
+        match = re.search(r"\S+", line)
+        positions = (match.start(), match.end())  # ty: ignore[unresolved-attribute]
+        raise BadConfigurationOptionError(line_number, positions, words[0]) from e
 
     try:
         arg_line = words[1]
     except IndexError as e:
-        raise NoArgumentAfterKeywordError from e
+        positions = (len(line) - 1, len(line) - 1)
+        raise NoArgumentAfterKeywordError(line_number, positions) from e
 
     match keyword:
         case Keyword.LocalCommand | Keyword.ProxyCommand | Keyword.RemoteCommand:
@@ -210,9 +240,10 @@ def _split_line(line: str) -> KeywordArgToken:
             args, inline_comment = _split_argument(arg_line)
 
     if len(args) == 0:
-        raise NoArgumentAfterKeywordError
+        positions = (len(line) - 1, len(line) - 1)
+        raise NoArgumentAfterKeywordError(line_number, positions)
 
-    return KeywordArgToken(keyword, args, inline_comment)
+    return KeywordArgToken(line_number, keyword, args, inline_comment)
 
 
 def _split_argument(rest_of_line: str) -> tuple[list[str], str | None]:

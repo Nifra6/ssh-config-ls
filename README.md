@@ -16,7 +16,7 @@ Little side project to start learning Rust and explore LSP.
 
 - Formatting of SSH config files via the `sshls format` command
 - Language server started with `sshls server`, following the LSP protocol
-- Basic completions of keywords through the language server
+- Keyword completion and real-time error reporting through the language server
 
 ## 📦 Installation
 

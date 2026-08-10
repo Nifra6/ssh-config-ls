@@ -14,15 +14,15 @@ EXEMPLES: list[tuple[list[LineToken], SSHConfig]] = [
     ([], SSHConfig()),
     (
         [
-            KeywordArgToken(Keyword.IdentityFile, ["/home/user/my key"]),
-            KeywordArgToken(Keyword.User, ["secret_user"]),
+            KeywordArgToken(0, Keyword.IdentityFile, ["/home/user/my key"]),
+            KeywordArgToken(1, Keyword.User, ["secret_user"]),
         ],
         SSHConfig(
             (
                 GlobalBlock(
                     (
-                        KeywordArgToken(Keyword.IdentityFile, ["/home/user/my key"]),
-                        KeywordArgToken(Keyword.User, ["secret_user"]),
+                        KeywordArgToken(0, Keyword.IdentityFile, ["/home/user/my key"]),
+                        KeywordArgToken(1, Keyword.User, ["secret_user"]),
                     )
                 ),
             )
@@ -30,16 +30,16 @@ EXEMPLES: list[tuple[list[LineToken], SSHConfig]] = [
     ),
     (
         [
-            KeywordArgToken(Keyword.Port, ["22"]),
-            KeywordArgToken(Keyword.Host, ["myserver"], comment="# inline comment"),
-            KeywordArgToken(Keyword.Hostname, ["192.168.1.1"]),
+            KeywordArgToken(0, Keyword.Port, ["22"]),
+            KeywordArgToken(1, Keyword.Host, ["myserver"], comment="# inline comment"),
+            KeywordArgToken(2, Keyword.Hostname, ["192.168.1.1"]),
         ],
         SSHConfig(
             (
-                GlobalBlock((KeywordArgToken(Keyword.Port, ["22"]),)),
+                GlobalBlock((KeywordArgToken(0, Keyword.Port, ["22"]),)),
                 HostBlock(
                     ("myserver",),
-                    (KeywordArgToken(Keyword.Hostname, ["192.168.1.1"]),),
+                    (KeywordArgToken(2, Keyword.Hostname, ["192.168.1.1"]),),
                     comment="# inline comment",
                 ),
             )

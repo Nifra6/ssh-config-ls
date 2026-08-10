@@ -18,8 +18,8 @@ EXEMPLES: list[tuple[SSHConfig, str]] = [
             (
                 GlobalBlock(
                     (
-                        KeywordArgToken(Keyword.IdentityFile, ["/home/user/my key"]),
-                        KeywordArgToken(Keyword.User, ["secret_user"]),
+                        KeywordArgToken(0, Keyword.IdentityFile, ["/home/user/my key"]),
+                        KeywordArgToken(1, Keyword.User, ["secret_user"]),
                     )
                 ),
             )
@@ -30,10 +30,10 @@ User secret_user""",
     (
         SSHConfig(
             (
-                GlobalBlock((KeywordArgToken(Keyword.Port, ["22"]),)),
+                GlobalBlock((KeywordArgToken(0, Keyword.Port, ["22"]),)),
                 HostBlock(
                     ("myserver",),
-                    (KeywordArgToken(Keyword.Hostname, ["192.168.1.1"]),),
+                    (KeywordArgToken(2, Keyword.Hostname, ["192.168.1.1"]),),
                     comment="# inline comment",
                 ),
             )

@@ -4,10 +4,11 @@ from importlib.metadata import version
 
 from lsprotocol import types
 from pygls.lsp.server import LanguageServer
+from pygls.workspace import TextDocument
 
 from ssh_config_ls.completion import get_completion
 from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR, format_tree
-from ssh_config_ls.lexer import tokenize
+from ssh_config_ls.lexer import tokenize, tokenize_with_errors
 from ssh_config_ls.parser import DEFAULT_SORT, parse
 
 # ------------------------------------------------------------
@@ -20,6 +21,20 @@ server = LanguageServer("ssh-config-ls", version("ssh_config_ls"))
 # ------------------------------------------------------------
 # CAPABILITIES
 # ------------------------------------------------------------
+
+
+@server.feature(types.TEXT_DOCUMENT_DID_OPEN)
+def did_open(ls: LanguageServer, params: types.DidOpenTextDocumentParams) -> None:
+    """Parse a document when it is opened."""
+    document = server.workspace.get_text_document(params.text_document.uri)
+    _publish_diagnostics(ls, document)
+
+
+@server.feature(types.TEXT_DOCUMENT_DID_CHANGE)
+def did_change(ls: LanguageServer, params: types.DidChangeTextDocumentParams) -> None:
+    """Parse a document when it is changed."""
+    document = server.workspace.get_text_document(params.text_document.uri)
+    _publish_diagnostics(ls, document)
 
 
 @server.feature(types.TEXT_DOCUMENT_FORMATTING)
@@ -76,3 +91,31 @@ def completion(params: types.CompletionParams) -> list[types.CompletionItem]:
         types.CompletionItem(label=word)
         for word in get_completion(current_line, params.position.character)
     ]
+
+
+# ------------------------------------------------------------
+# PRIVATE FUNCTIONS
+# ------------------------------------------------------------
+
+
+def _publish_diagnostics(ls: LanguageServer, document: TextDocument) -> None:
+    """Publish diagnostics to the client."""
+    _, errors = tokenize_with_errors(document.source)
+
+    diagnostics = [
+        types.Diagnostic(
+            range=types.Range(
+                start=types.Position(line=e.line, character=e.positions[0]),
+                end=types.Position(line=e.line, character=e.positions[1]),
+            ),
+            message=str(e),
+            severity=types.DiagnosticSeverity.Error,
+        )
+        for e in errors
+    ]
+
+    ls.text_document_publish_diagnostics(
+        types.PublishDiagnosticsParams(
+            uri=document.uri, diagnostics=diagnostics, version=document.version
+        )
+    )
