@@ -1,7 +1,5 @@
 """Provide completions for words in an SSH config."""
 
-import re
-
 from ssh_config_ls.lexer import Keyword
 
 # ------------------------------------------------------------
@@ -10,18 +8,19 @@ from ssh_config_ls.lexer import Keyword
 
 
 def get_completion(line: str, position: int) -> list[str]:
-    """Get all completions for a word.
+    """Get keyword completions for the current word at the cursor position.
 
     Args:
         line: A line from an SSH config.
-        position: Position of the cursor.
+        position: Position of the cursor in the line.
 
     Returns:
-        All possible completions for the current word.
+        All keywords containing the current word as a substring,
+        or an empty list if the cursor is not on the first word.
     """
-    word = re.search(r"\S+", line)
-    if word and word.start() <= position <= word.end():
-        return _get_possible_keywords(word.group())
+    words = line[:position].split()
+    if len(words) == 1:
+        return _get_possible_keywords(words[0])
     return []
 
 
@@ -31,5 +30,12 @@ def get_completion(line: str, position: int) -> list[str]:
 
 
 def _get_possible_keywords(word: str) -> list[str]:
-    """Return all keywords that contains the given subword."""
+    """Return all keywords containing the given string as a substring.
+
+    Args:
+        word: The partial word to match against keyword names.
+
+    Returns:
+        Canonical names of all matching keywords.
+    """
     return [kw.name for kw in Keyword if word.lower() in kw.lower()]

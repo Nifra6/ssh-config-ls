@@ -3,15 +3,6 @@
 from importlib.metadata import version
 
 from lsprotocol import types
-from lsprotocol.types import (
-    TEXT_DOCUMENT_FORMATTING,
-    ConfigurationItem,
-    ConfigurationParams,
-    DocumentFormattingParams,
-    Position,
-    Range,
-    TextEdit,
-)
 from pygls.lsp.server import LanguageServer
 
 from ssh_config_ls.completion import get_completion
@@ -31,13 +22,13 @@ server = LanguageServer("ssh-config-ls", version("ssh_config_ls"))
 # ------------------------------------------------------------
 
 
-@server.feature(TEXT_DOCUMENT_FORMATTING)
+@server.feature(types.TEXT_DOCUMENT_FORMATTING)
 async def format_document(
-    ls: LanguageServer, params: DocumentFormattingParams
-) -> list[TextEdit]:
+    ls: LanguageServer, params: types.DocumentFormattingParams
+) -> list[types.TextEdit]:
     """Format the whole document."""
     config = await ls.workspace_configuration_async(
-        ConfigurationParams(items=[ConfigurationItem(section="formatter")])
+        types.ConfigurationParams(items=[types.ConfigurationItem(section="formatter")])
     )
 
     formatter_config = config[0] or {}
@@ -65,10 +56,10 @@ async def format_document(
         last_line, last_char = 0, 0
 
     return [
-        TextEdit(
-            range=Range(
-                start=Position(line=0, character=0),
-                end=Position(line=last_line, character=last_char),
+        types.TextEdit(
+            range=types.Range(
+                start=types.Position(line=0, character=0),
+                end=types.Position(line=last_line, character=last_char),
             ),
             new_text=formatted,
         )
