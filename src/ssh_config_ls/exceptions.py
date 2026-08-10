@@ -4,10 +4,13 @@
 class SSHConfigError(ValueError):
     """Base class for SSH config parsing errors."""
 
-    def __init__(self, line: int, positions: tuple[int, int], message: str) -> None:
+    def __init__(
+        self, line: int, positions: tuple[int, int], code: str, message: str
+    ) -> None:
         """Initialize the SSH config error."""
         self.line = line
         self.positions = positions
+        self.code = code
         super().__init__(message)
 
 
@@ -17,7 +20,7 @@ class BadConfigurationOptionError(SSHConfigError):
     def __init__(self, line: int, positions: tuple[int, int], keyword: str) -> None:
         """Initialize the Bad configuration option error."""
         super().__init__(
-            line, positions, f"Bad configuration option: `{keyword}` is unknown."
+            line, positions, "E001", f"The keyword `{keyword}` is unknown."
         )
 
 
@@ -26,4 +29,4 @@ class NoArgumentAfterKeywordError(SSHConfigError):
 
     def __init__(self, line: int, positions: tuple[int, int]) -> None:
         """Initialize the No argument after keyword error."""
-        super().__init__(line, positions, "No argument after keyword.")
+        super().__init__(line, positions, "E002", "No argument after keyword.")

@@ -110,6 +110,8 @@ def _publish_diagnostics(ls: LanguageServer, document: TextDocument) -> None:
             ),
             message=str(e),
             severity=types.DiagnosticSeverity.Error,
+            code=e.code,
+            source="sshls",
         )
         for e in errors
     ]
