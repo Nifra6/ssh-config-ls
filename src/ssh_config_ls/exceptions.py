@@ -1,5 +1,7 @@
 """Exceptions raised by the SSH config LS."""
 
+bit = "bid"
+
 
 class SSHConfigError(ValueError):
     """Base class for SSH config parsing errors."""

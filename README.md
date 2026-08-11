@@ -10,13 +10,13 @@
 [![Linter/Formatter: ruff](https://gitlab.com/nifra/assets/-/raw/main/badges/ruff.svg)](https://docs.astral.sh/ruff/)
 [![Type checker: ty](https://gitlab.com/nifra/assets/-/raw/main/badges/ty.svg)](https://docs.astral.sh/ty/)
 
-Little side project to start learning Rust and explore LSP.
+A Language Server for OpenSSH configuration files, with a CLI formatter.
 
 ## ✨ Features
 
 - Formatting of SSH config files via the `sshls format` command
 - Language server started with `sshls server`, following the LSP protocol
-- Keyword completion and real-time error reporting through the language server
+- Formatting, real-time error reporting and keyword completion through the language server
 
 ## 📦 Installation
 

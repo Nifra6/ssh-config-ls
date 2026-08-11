@@ -4,7 +4,8 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Final
 
-from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken
+from ssh_config_ls.keywords import Keyword
+from ssh_config_ls.lexer import KeywordArgToken, LineToken
 
 # ------------------------------------------------------------
 # CONSTANTS
@@ -83,7 +84,7 @@ def parse(
     for tok in tokens:
         if isinstance(tok, str):
             current_directives.append(tok)
-        elif tok.keyword in (Keyword.Host, Keyword.Match):
+        elif tok.keyword in (Keyword.HOST, Keyword.MATCH):
             blocks.append(
                 _flush_block(
                     current_block, current_directives, sort_directives=sort_directives
@@ -129,14 +130,14 @@ def _flush_block(
     if block_definition is None:
         return GlobalBlock(sort(directives))
 
-    if block_definition.keyword == Keyword.Host:
+    if block_definition.keyword == Keyword.HOST:
         return HostBlock(
             tuple(block_definition.args),
             sort(directives),
             comment=block_definition.comment,
         )
 
-    if block_definition.keyword == Keyword.Match:
+    if block_definition.keyword == Keyword.MATCH:
         return MatchBlock(
             " ".join(block_definition.args),
             sort(directives),

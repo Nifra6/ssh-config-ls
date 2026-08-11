@@ -1,7 +1,7 @@
 [project]
 name = "ssh-config-ls"
-version = "0.9.1"
-description = "An SSH config formatter, usable as a Language Server Protocol (LSP) plugin."
+version = "0.10.0"
+description = "A Language Server for OpenSSH configuration files, with a CLI formatter."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"

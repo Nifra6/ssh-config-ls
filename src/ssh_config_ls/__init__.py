@@ -1,9 +1,10 @@
-"""An SSH config formatter, usable as a Language Server Protocol (LSP) plugin.
+"""A Language Server for OpenSSH configuration files, with a CLI formatter.
 
 Modules
 
 - `ssh_config_ls.cli` — CLI to use implemented functionalities.
 - `ssh_config_ls.lsp` — language server declaration.
+- `ssh_config_ls.keywords` — definition of language keywords.
 - `ssh_config_ls.lexer` — tokenization of SSH config files.
 - `ssh_config_ls.parser` — parsing of SSH config tokens.
 - `ssh_config_ls.formatter` — formatting of SSH config tree.
@@ -13,8 +14,8 @@ Modules
 ## What is ssh-config-ls?
 
 This module is an ongoing prototype of a language server, dedicated to OpenSSH
-configuration files. Its current planned scope is to be usable as a formatter
-and potentially lint some errors (detected through the parsing of the file).
+configuration files. Its current scope includes formatting, real-time error reporting,
+and keyword completion.
 The prototype is developed in Python and once hitting a mature state, the Rust
 implementation will start.
 
@@ -24,7 +25,7 @@ This little side project is an excuse to, in order of importance:
 
 - force me to start learning Rust;
 - understand LSP;
-- work my unit testing;
+- work on my unit testing skills;
 - revise my knowledge in parsing;
 - create an application that I may need 3 minutes in my whole life and I didn't
     find existing.

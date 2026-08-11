@@ -3,7 +3,8 @@
 
 import pytest
 
-from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken
+from ssh_config_ls.keywords import Keyword
+from ssh_config_ls.lexer import KeywordArgToken, LineToken
 from ssh_config_ls.parser import GlobalBlock, HostBlock, SSHConfig, parse
 
 # ------------------------------------------------------------
@@ -14,15 +15,15 @@ EXEMPLES: list[tuple[list[LineToken], SSHConfig]] = [
     ([], SSHConfig()),
     (
         [
-            KeywordArgToken(0, Keyword.IdentityFile, ["/home/user/my key"]),
-            KeywordArgToken(1, Keyword.User, ["secret_user"]),
+            KeywordArgToken(0, Keyword.IDENTITYFILE, ["/home/user/my key"]),
+            KeywordArgToken(1, Keyword.USER, ["secret_user"]),
         ],
         SSHConfig(
             (
                 GlobalBlock(
                     (
-                        KeywordArgToken(0, Keyword.IdentityFile, ["/home/user/my key"]),
-                        KeywordArgToken(1, Keyword.User, ["secret_user"]),
+                        KeywordArgToken(0, Keyword.IDENTITYFILE, ["/home/user/my key"]),
+                        KeywordArgToken(1, Keyword.USER, ["secret_user"]),
                     )
                 ),
             )
@@ -30,16 +31,16 @@ EXEMPLES: list[tuple[list[LineToken], SSHConfig]] = [
     ),
     (
         [
-            KeywordArgToken(0, Keyword.Port, ["22"]),
-            KeywordArgToken(1, Keyword.Host, ["myserver"], comment="# inline comment"),
-            KeywordArgToken(2, Keyword.Hostname, ["192.168.1.1"]),
+            KeywordArgToken(0, Keyword.PORT, ["22"]),
+            KeywordArgToken(1, Keyword.HOST, ["myserver"], comment="# inline comment"),
+            KeywordArgToken(2, Keyword.HOSTNAME, ["192.168.1.1"]),
         ],
         SSHConfig(
             (
-                GlobalBlock((KeywordArgToken(0, Keyword.Port, ["22"]),)),
+                GlobalBlock((KeywordArgToken(0, Keyword.PORT, ["22"]),)),
                 HostBlock(
                     ("myserver",),
-                    (KeywordArgToken(2, Keyword.Hostname, ["192.168.1.1"]),),
+                    (KeywordArgToken(2, Keyword.HOSTNAME, ["192.168.1.1"]),),
                     comment="# inline comment",
                 ),
             )

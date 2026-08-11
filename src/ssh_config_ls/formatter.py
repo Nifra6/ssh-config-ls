@@ -5,7 +5,8 @@ from collections.abc import Sequence
 from functools import partial
 from typing import Final
 
-from ssh_config_ls.lexer import Keyword, KeywordArgToken
+from ssh_config_ls.keywords import Keyword
+from ssh_config_ls.lexer import KeywordArgToken
 from ssh_config_ls.parser import GlobalBlock, HostBlock, MatchBlock, SSHBlock, SSHConfig
 
 # ------------------------------------------------------------
@@ -83,13 +84,13 @@ def _format_block(
     if isinstance(block, HostBlock):
         formatted_lines.append(
             _write_keyword_argument_line(
-                Keyword.Host, block.patterns, block.comment, indent=""
+                Keyword.HOST, block.patterns, block.comment, indent=""
             )
         )
     elif isinstance(block, MatchBlock):
         formatted_lines.append(
             _write_keyword_argument_line(
-                Keyword.Match, (block.conditions), block.comment, indent=""
+                Keyword.MATCH, (block.conditions), block.comment, indent=""
             )
         )
     for line in block.directives:
@@ -130,7 +131,7 @@ def _write_keyword_argument_line(
         The formatted line as a string.
     """
     line = (
-        f"{indent}{keyword.name}{separator}"
+        f"{indent}{keyword.value.canonical}{separator}"
         f"{' '.join(map(partial(_quote_arg_if_needed, keyword), args))}"
     )
     if comment:
@@ -153,9 +154,9 @@ def _quote_arg_if_needed(keyword: Keyword, arg: str) -> str:
         unchanged otherwise.
     """
     if keyword not in (
-        Keyword.LocalCommand,
-        Keyword.ProxyCommand,
-        Keyword.RemoteCommand,
+        Keyword.LOCALCOMMAND,
+        Keyword.PROXYCOMMAND,
+        Keyword.REMOTECOMMAND,
     ) and (" " in arg or arg[0] == "="):
         return f'"{arg}"'
     return arg

@@ -7,7 +7,8 @@ from ssh_config_ls.exceptions import (
     BadConfigurationOptionError,
     NoArgumentAfterKeywordError,
 )
-from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken, tokenize
+from ssh_config_ls.keywords import Keyword
+from ssh_config_ls.lexer import KeywordArgToken, LineToken, tokenize
 
 # ------------------------------------------------------------
 # CONSTANTS
@@ -16,11 +17,11 @@ from ssh_config_ls.lexer import Keyword, KeywordArgToken, LineToken, tokenize
 SINGLE_LINE_CASES: list[tuple[str, list[LineToken]]] = [
     ("", []),
     ("# An awesome comment", ["# An awesome comment"]),
-    ("  HostName 192.168.1.1", [KeywordArgToken(0, Keyword.Hostname, ["192.168.1.1"])]),
-    ("Port = 22", [KeywordArgToken(0, Keyword.Port, ["22"])]),
+    ("  HostName 192.168.1.1", [KeywordArgToken(0, Keyword.HOSTNAME, ["192.168.1.1"])]),
+    ("Port = 22", [KeywordArgToken(0, Keyword.PORT, ["22"])]),
     (
         "Host myserver # inline comment",
-        [KeywordArgToken(0, Keyword.Host, ["myserver"], comment="# inline comment")],
+        [KeywordArgToken(0, Keyword.HOST, ["myserver"], comment="# inline comment")],
     ),
 ]
 
@@ -37,12 +38,12 @@ def test_single_line(line: str, expected: list[LineToken]) -> None:
 @pytest.mark.parametrize("line", ["Port=22", "Port =22", "Port= 22", "Port = 22"])
 def test_equals_separator(line: str) -> None:
     token = tokenize(line)
-    assert token[0] == KeywordArgToken(0, Keyword.Port, ["22"])
+    assert token[0] == KeywordArgToken(0, Keyword.PORT, ["22"])
 
 
 def test_quoted_value() -> None:
     tokens = tokenize('IdentityFile "/home/user/my key"')
-    assert KeywordArgToken(0, Keyword.IdentityFile, ["/home/user/my key"]) in tokens
+    assert KeywordArgToken(0, Keyword.IDENTITYFILE, ["/home/user/my key"]) in tokens
 
 
 @pytest.mark.parametrize(
@@ -80,12 +81,12 @@ def test_whitespace_tolerance(line: str) -> None:
 def test_keyword_case_insensitive(raw: str) -> None:
     token = tokenize(f"{raw} myserver")[0]
     assert isinstance(token, KeywordArgToken)
-    assert token.keyword is Keyword.Host
+    assert token.keyword is Keyword.HOST
 
 
 @pytest.mark.parametrize(
     ("line", "keyword"),
-    [("ipqos lowdelay", Keyword.IPQoS), ("macs hmac-sha2-256", Keyword.MACs)],
+    [("ipqos lowdelay", Keyword.IPQOS), ("macs hmac-sha2-256", Keyword.MACS)],
 )
 def test_awkward_case_keywords(line: str, keyword: Keyword) -> None:
     token = tokenize(line)[0]
@@ -96,7 +97,7 @@ def test_awkward_case_keywords(line: str, keyword: Keyword) -> None:
 def test_host_multiple_patterns() -> None:
     token = tokenize("Host bastion jumpbox")[0]
     assert isinstance(token, KeywordArgToken)
-    assert token.keyword == Keyword.Host
+    assert token.keyword == Keyword.HOST
     assert token.args == ["bastion", "jumpbox"]
 
 
@@ -117,7 +118,7 @@ def test_special_characters_in_value(line: str, expected_value: list[str]) -> No
 
 def test_include_glob() -> None:
     tokens = tokenize("Include ~/.ssh/conf.d/*.conf")
-    assert tokens[0] == KeywordArgToken(0, Keyword.Include, ["~/.ssh/conf.d/*.conf"])
+    assert tokens[0] == KeywordArgToken(0, Keyword.INCLUDE, ["~/.ssh/conf.d/*.conf"])
 
 
 @pytest.mark.parametrize(

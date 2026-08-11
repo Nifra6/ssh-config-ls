@@ -1,10 +1,11 @@
 """Provide completions for words in an SSH config."""
 
-from ssh_config_ls.lexer import Keyword
 
 # ------------------------------------------------------------
 # PUBLIC FUNCTIONS
 # ------------------------------------------------------------
+
+from ssh_config_ls.keywords import Keyword
 
 
 def get_completion(line: str, position: int) -> list[str]:
@@ -38,4 +39,8 @@ def _get_possible_keywords(word: str) -> list[str]:
     Returns:
         Canonical names of all matching keywords.
     """
-    return [kw.name for kw in Keyword if word.lower() in kw.lower()]
+    return [
+        kw.value.canonical
+        for kw in Keyword
+        if word.lower() in kw.value.canonical.lower()
+    ]

@@ -34,7 +34,7 @@ def cli_format_config(
         str, typer.Option(help="Separator between keywords and their arguments.")
     ] = DEFAULT_SEPARATOR,
     sort_directives: Annotated[
-        bool, typer.Option(help="Indentation applied to directives inside a block.")
+        bool, typer.Option(help="Sort directives within blocks.")
     ] = DEFAULT_SORT,
 ) -> None:
     """Format an SSH config file."""

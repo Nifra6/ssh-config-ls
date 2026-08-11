@@ -4,7 +4,8 @@
 import pytest
 
 from ssh_config_ls.formatter import format_tree
-from ssh_config_ls.lexer import Keyword, KeywordArgToken
+from ssh_config_ls.keywords import Keyword
+from ssh_config_ls.lexer import KeywordArgToken
 from ssh_config_ls.parser import GlobalBlock, HostBlock, SSHConfig
 
 # ------------------------------------------------------------
@@ -18,8 +19,8 @@ EXEMPLES: list[tuple[SSHConfig, str]] = [
             (
                 GlobalBlock(
                     (
-                        KeywordArgToken(0, Keyword.IdentityFile, ["/home/user/my key"]),
-                        KeywordArgToken(1, Keyword.User, ["secret_user"]),
+                        KeywordArgToken(0, Keyword.IDENTITYFILE, ["/home/user/my key"]),
+                        KeywordArgToken(1, Keyword.USER, ["secret_user"]),
                     )
                 ),
             )
@@ -30,10 +31,10 @@ User secret_user""",
     (
         SSHConfig(
             (
-                GlobalBlock((KeywordArgToken(0, Keyword.Port, ["22"]),)),
+                GlobalBlock((KeywordArgToken(0, Keyword.PORT, ["22"]),)),
                 HostBlock(
                     ("myserver",),
-                    (KeywordArgToken(2, Keyword.Hostname, ["192.168.1.1"]),),
+                    (KeywordArgToken(2, Keyword.HOSTNAME, ["192.168.1.1"]),),
                     comment="# inline comment",
                 ),
             )

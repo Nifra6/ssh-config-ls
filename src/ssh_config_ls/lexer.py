@@ -2,126 +2,17 @@
 
 import re
 from dataclasses import dataclass
-from enum import StrEnum, auto
 
 from ssh_config_ls.exceptions import (
     BadConfigurationOptionError,
     NoArgumentAfterKeywordError,
     SSHConfigError,
 )
+from ssh_config_ls.keywords import Keyword
 
 # ------------------------------------------------------------
 # CLASSES
 # ------------------------------------------------------------
-
-
-class Keyword(StrEnum):
-    """Keyword tokens used in SSH configs."""
-
-    Host = auto()
-    Match = auto()
-    AddKeysToAgent = auto()
-    AddressFamily = auto()
-    BatchMode = auto()
-    BindAddress = auto()
-    BindInterface = auto()
-    CanonicalDomains = auto()
-    CanonicalizeFallbackLocal = auto()
-    CanonicalizeHostname = auto()
-    CanonicalizeMaxDots = auto()
-    CanonicalizePermittedCNAMEs = auto()
-    CASignatureAlgorithms = auto()
-    CertificateFile = auto()
-    ChannelTimeout = auto()
-    CheckHostIP = auto()
-    Ciphers = auto()
-    ClearAllForwardings = auto()
-    Compression = auto()
-    ConnectionAttempts = auto()
-    ConnectTimeout = auto()
-    ControlMaster = auto()
-    ControlPath = auto()
-    ControlPersist = auto()
-    DynamicForward = auto()
-    EnableEscapeCommandline = auto()
-    EnableSSHKeysign = auto()
-    EscapeChar = auto()
-    ExitOnForwardFailure = auto()
-    FingerprintHash = auto()
-    ForkAfterAuthentification = auto()
-    ForwardAgent = auto()
-    ForwardX11 = auto()
-    ForwardX11Timeout = auto()
-    ForwardX11Trusted = auto()
-    GatewayPorts = auto()
-    GlobalKnownHostsFile = auto()
-    GSSAPIAuthentification = auto()
-    GSSAPIDelegateCredentials = auto()
-    HashKnownHosts = auto()
-    HostbasedAcceptedAlgorithms = auto()
-    HostbasedAuthentification = auto()
-    HostKeyAlgorithms = auto()
-    HostKeyAlias = auto()
-    Hostname = auto()
-    IdentitiesOnly = auto()
-    IdentityAgent = auto()
-    IdentityFile = auto()
-    IgnoreUnknown = auto()
-    Include = auto()
-    IPQoS = auto()
-    KbdInteractiveAuthentication = auto()
-    KbdInteractiveDevices = auto()
-    KexAlgorithms = auto()
-    KnownHostsCommand = auto()
-    LocalCommand = auto()
-    LocalForward = auto()
-    LogLevel = auto()
-    LogVerbose = auto()
-    MACs = auto()
-    NoHostAuthenticationForLocalhost = auto()
-    NumberOfPasswordPrompts = auto()
-    ObscureKeystrokeTiming = auto()
-    PasswordAuthentication = auto()
-    PermitLocalCommand = auto()
-    PermitRemoteOpen = auto()
-    PKCS11Provider = auto()
-    Port = auto()
-    PreferredAuthentications = auto()
-    ProxyCommand = auto()
-    ProxyJump = auto()
-    ProxyUseFdpass = auto()
-    PubkeyAcceptedAlgorithms = auto()
-    PubkeyAuthentication = auto()
-    RefuseConnection = auto()
-    RekeyLimit = auto()
-    RemoteCommand = auto()
-    RemoteForward = auto()
-    RequestTTY = auto()
-    RequiredRSASize = auto()
-    RevokedHostKeys = auto()
-    SecurityKeyProvider = auto()
-    SendEnv = auto()
-    ServerAliveCountMax = auto()
-    ServerAliveInterval = auto()
-    SessionType = auto()
-    SetEnv = auto()
-    StdinNull = auto()
-    StreamLocalBindMask = auto()
-    StreamLocalBindUnlink = auto()
-    StrictHostKeyChecking = auto()
-    SyslogFacility = auto()
-    TCKeepAlive = auto()
-    Tag = auto()
-    Tunnel = auto()
-    TunnelDevice = auto()
-    UpdateHostKeys = auto()
-    User = auto()
-    UserKnownHostsFile = auto()
-    VerifyHostKeyDNS = auto()
-    VersionAddendum = auto()
-    VisualHostKey = auto()
-    WarnWeakCrypto = auto()
-    XAuthLocation = auto()
 
 
 @dataclass(frozen=True)
@@ -233,7 +124,7 @@ def _split_line(line: str, line_number: int) -> KeywordArgToken:
         raise NoArgumentAfterKeywordError(line_number, positions) from e
 
     match keyword:
-        case Keyword.LocalCommand | Keyword.ProxyCommand | Keyword.RemoteCommand:
+        case Keyword.LOCALCOMMAND | Keyword.PROXYCOMMAND | Keyword.REMOTECOMMAND:
             args = [arg_line.strip()]
             inline_comment = None
         case _:
