@@ -25,15 +25,14 @@ ruff-format:
 
 pages:
   stage: deploy
-  image: python:3.14-slim
-  publish: public
-  rules:
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-  before_script:
-    - pip install . pdoc
+  image: python:latest
   script:
-    - pdoc -o public -d google --no-include-undocumented --logo https://gitlab.com/uploads/-/system/project/avatar/82167111/logo.png --logo-link https://gitlab.com/nifra/ssh-config-ls ssh_config_ls
-
+    - pip install zensical
+    - zensical build --clean 
+  pages:
+    publish: site 
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 publish:
   stage: deploy

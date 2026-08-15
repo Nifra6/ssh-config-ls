@@ -25,6 +25,7 @@ dev = [
   "pytest>=9.0.3",
   "ruff>=0.15.14",
   "ty>=0.0.40",
+  "zensical>=0.0.54",
 ]
 
 [build-system]
@@ -59,3 +60,6 @@ convention = "google"
 docstring-code-format = true
 line-ending = "lf"
 skip-magic-trailing-comma = true
+
+[tool.tombi.format.rules]
+line-width = 88

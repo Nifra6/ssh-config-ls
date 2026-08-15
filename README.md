@@ -85,8 +85,8 @@ This is the Python prototype of the language server. The following features are 
 - [x] Language server
   - [x] `textDocument/formatting`
   - [x] `textDocument/completion`
-    - [x] `textDocument/diagnostic` - Report syntax errors
-    - [ ] `textDocument/diagnostic` - Report warnings
+  - [x] `textDocument/diagnostic` - Report syntax errors
+  - [ ] `textDocument/diagnostic` - Report warnings
   - [ ] `textDocument/hover`
 - [ ] Test coverage
 
