@@ -1,7 +1,7 @@
 [project]
 site_name = "sshls"
 site_description = "A Language Server for OpenSSH configuration files, with a CLI formatter."
-site_url = "https://ssh-config-formatter-2adfa2.gitlab.io"
+site_url = "http://sshls.nicolasmaignan.fr"
 
 site_author = "Nicolas Maignan"
 copyright = "Copyright &copy; 2026 Nicolas Maignan"

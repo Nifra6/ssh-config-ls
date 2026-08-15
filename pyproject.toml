@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://ssh-config-formatter-2adfa2.gitlab.io"
+Documentation = "http://sshls.nicolasmaignan.fr"
 Repository = "https://gitlab.com/nifra/ssh-config-ls"
 
 [project.scripts]
