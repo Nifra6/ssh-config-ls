@@ -14,15 +14,15 @@ For each command or sub commands, you can access some information by adding `--h
 
 ### `format`
 
-Formats the selected file. It requires an explicit file path and does not support multiple files or directories.
+Formats the selected file. It requires at least an explicit file path and does not support directories.
 
 ```sh
-sshls format [OPTIONS] {file}
+sshls format [OPTIONS] {files}...
 ```
 
 **Arguments** <!-- rumdl-disable-line no-emphasis-as-heading -->
 
-`FILE`: Path to the config file.
+`files`: List of config files to format.
 
 **Options** <!-- rumdl-disable-line no-emphasis-as-heading -->
 

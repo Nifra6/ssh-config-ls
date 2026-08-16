@@ -7,6 +7,7 @@ import typer
 from rich import print as rich_print
 
 from ssh_config_ls import __version__
+from ssh_config_ls.exceptions import SSHConfigError
 from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR
 from ssh_config_ls.parser import DEFAULT_SORT
 
@@ -26,7 +27,9 @@ app = typer.Typer(
 
 @app.command(name="format", no_args_is_help=True)
 def cli_format_config(
-    file: Annotated[Path, typer.Argument(help="Path to the config file.")],
+    files: Annotated[
+        list[Path], typer.Argument(help="List of config files to format.")
+    ],
     indent: Annotated[
         str, typer.Option(help="Indentation applied to directives inside a block.")
     ] = DEFAULT_INDENT,
@@ -42,14 +45,41 @@ def cli_format_config(
     from ssh_config_ls.lexer import tokenize
     from ssh_config_ls.parser import parse
 
-    content = file.read_text()
+    formatted_files = 0
+    unchanged_files = 0
+    for file in files:
+        content = file.read_text()
 
-    tokens = tokenize(content)
-    syntax_tree = parse(tokens, sort_directives=sort_directives)
-    formatted_content = format_tree(syntax_tree, indent=indent, separator=separator)
+        try:
+            tokens = tokenize(content)
+            syntax_tree = parse(tokens, sort_directives=sort_directives)
+            formatted_content = format_tree(
+                syntax_tree, indent=indent, separator=separator
+            )
 
-    with file.open("w") as f:
-        f.write(formatted_content)
+            if content != formatted_content:
+                formatted_files += 1
+                with file.open("w") as f:
+                    f.write(formatted_content)
+            else:
+                unchanged_files += 1
+        except SSHConfigError:
+            unchanged_files += 1
+            continue
+
+    if formatted_files > 0 and unchanged_files > 0:
+        rich_print(
+            f"{formatted_files} file{'s' if formatted_files > 1 else ''} formatted,"
+            f" {unchanged_files} file{'s' if unchanged_files > 1 else ''} unchanged."
+        )
+    elif formatted_files > 0:
+        rich_print(
+            f"{formatted_files} file{'s' if formatted_files > 1 else ''} formatted."
+        )
+    else:
+        rich_print(
+            f"{unchanged_files} file{'s' if unchanged_files > 1 else ''} unchanged."
+        )
 
 
 @app.command(name="server")

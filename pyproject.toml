@@ -1,6 +1,6 @@
 [project]
 name = "ssh-config-ls"
-version = "0.10.0"
+version = "0.10.1"
 description = "A Language Server for OpenSSH configuration files, with a CLI formatter."
 readme = "README.md"
 requires-python = ">=3.11"
