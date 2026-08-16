@@ -15,6 +15,7 @@ nav = [
     "installation.md",
     "editors.md",
   ] },
+  { "Usage" = ["cli.md"] }
 ]
 
 [project.theme]
@@ -64,8 +65,20 @@ toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
 
 [[project.extra.social]]
+icon = "simple/gitlab"
+link = "https://gitlab.com/nifra/ssh-config-ls"
+
+[[project.extra.social]]
 icon = "simple/pypi"
 link = "https://pypi.org/project/ssh-config-ls/"
+
+[[project.extra.social]]
+icon = "simple/bluesky"
+link = "https://bsky.app/profile/nicolasmaignan.fr"
+
+[[project.extra.social]]
+icon = "lucide/globe"
+link = "https://nicolasmaignan.fr"
 
 [project.markdown_extensions]
 abbr = {}

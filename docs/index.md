@@ -4,7 +4,8 @@
 
 ![Image title](https://gitlab.com/uploads/-/system/project/avatar/82167111/logo.png)
 
-A Language Server for OpenSSH configuration files, with a CLI formatter.
+A Language Server for [OpenSSH configuration files](https://man.openbsd.org/ssh_config),
+with a CLI formatter.
 
 ## Features
 
