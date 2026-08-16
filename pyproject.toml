@@ -7,6 +7,13 @@ requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Nicolas MAIGNAN", email = "nicolas.maignan@proton.me" }]
+keywords = [
+  "formatter",
+  "language-server",
+  "lsp",
+  "openssh",
+  "ssh",
+]
 dependencies = [
   "pygls>=2.1.1",
   "typer>=0.26.7",
