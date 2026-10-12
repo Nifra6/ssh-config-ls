@@ -42,3 +42,21 @@ Make sure to enable the config in your configuration, such as in `init.lua`:
 ```lua 
 vim.lsp.enable("sshls")
 ```
+
+??? question "The server does not start for my included file. What is happening?"
+    The server is only started on buffers whose filetype is `sshconfig`, and
+    Neovim only detects that filetype for a few files: `~/.ssh/config`,
+    `/etc/ssh/ssh_config`, and `.conf` files in `~/.ssh/` and
+    `/etc/ssh/ssh_config.d`. A file pulled in with `Include` under another
+    name or location is not detected.
+
+    Check with `:set filetype?`. If it is not `sshconfig`, extend the
+    detection with `vim.filetype.add()`:
+
+    ```lua
+    vim.filetype.add({
+        pattern = {
+            [".*/%.ssh/config%.d/.*"] = "sshconfig",
+        },
+    })
+    ```
