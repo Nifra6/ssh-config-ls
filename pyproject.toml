@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "http://sshls.nicolasmaignan.fr"
+Documentation = "https://sshls.nicolasmaignan.fr"
 Repository = "https://gitlab.com/nifra/ssh-config-ls"
 
 [project.scripts]

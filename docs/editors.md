@@ -19,9 +19,10 @@ If `sshls` is available on your path, you can use Neovim's built-in LSP client (
 
     ```lua
     return {
-    cmd = { "sshls", "server" },
-    filetypes = { "sshconfig" },
-    settings = {}, -- Put your options there
+        cmd = { "sshls", "server" },
+        filetypes = { "sshconfig" },
+        root_markers = { "config" },
+        settings = {}, -- Put your options there
     }
     ```
 
@@ -29,9 +30,10 @@ If `sshls` is available on your path, you can use Neovim's built-in LSP client (
 
     ```lua
     vim.lsp.config["sshls"] = {
-    cmd = { "sshls", "server" },
-    filetypes = { "sshconfig" },
-    settings = {}, -- Put your options there
+        cmd = { "sshls", "server" },
+        filetypes = { "sshconfig" },
+        root_markers = { "config" },
+        settings = {}, -- Put your options there
     }
     ```
 

@@ -1,8 +1,7 @@
 [project]
 site_name = "sshls"
+site_url = "https://sshls.nicolasmaignan.fr"
 site_description = "A Language Server for OpenSSH configuration files, with a CLI formatter."
-site_url = "http://sshls.nicolasmaignan.fr"
-
 site_author = "Nicolas Maignan"
 copyright = "Copyright &copy; 2026 Nicolas Maignan"
 
@@ -23,21 +22,21 @@ language = "en"
 logo = "https://gitlab.com/uploads/-/system/project/avatar/82167111/logo.png"
 favicon = "https://gitlab.com/uploads/-/system/project/avatar/82167111/logo.png"
 features = [
-  "announce.dismiss",
-  "content.code.annotate",
-  "content.code.copy",
-  "content.code.select",
-  "content.footnote.tooltips",
-  "content.tabs.link",
-  "content.tooltips",
-  "navigation.footer",
+  # "announce.dismiss",
+  # "content.code.annotate",
+  "content.code.copy",  # Enable copy button in code cells
+  # "content.code.select",
+  # "content.footnote.tooltips",
+  "content.tabs.link",  # Synchronize selected label across content tabs
+  # "content.tooltips",
+  "navigation.footer",  # Arrows for previous/next pages at the footer
   "navigation.indexes",
   "navigation.instant",
   "navigation.instant.prefetch",
-  "navigation.path",
-  "navigation.sections",
-  "navigation.top",
-  "navigation.tracking",
+  # "navigation.path",
+  "navigation.sections",  # Sections are expanded and in bold when the browser is wide enough
+  "navigation.top",  # Back to top button
+  "navigation.tracking",  # URL synchronized with sections and cie within pages
   "search.highlight",
 ]
 
@@ -46,6 +45,8 @@ repo = "fontawesome/brands/gitlab"
 
 [project.theme.font]
 code = "Jetbrains Mono"
+
+# --- Light / dark toggle
 
 [[project.theme.palette]]
 media = "(prefers-color-scheme)"
@@ -64,6 +65,8 @@ scheme = "slate"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
 
+# --- Social icons
+
 [[project.extra.social]]
 icon = "simple/gitlab"
 link = "https://gitlab.com/nifra/ssh-config-ls"
@@ -80,12 +83,14 @@ link = "https://bsky.app/profile/nicolasmaignan.fr"
 icon = "lucide/globe"
 link = "https://nicolasmaignan.fr"
 
+# --- Zenzical extensions
+
 [project.markdown_extensions]
-abbr = {}
+# abbr = {}
 admonition = {}
-attr_list = {}
-def_list = {}
-footnotes = {}
+# attr_list = {}
+# def_list = {}
+# footnotes = {}
 md_in_html = {}
 toc = { permalink = true }
 pymdownx.arithmatex = { generic = true }
