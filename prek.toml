@@ -9,25 +9,24 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/astral-sh/ruff-pre-commit"
-rev = "v0.15.15"
+rev = "v0.17.1"
 hooks = [
   # Run the linter.
-  { id = "ruff-check", args = ["--fix"] },
+  { id = "ruff-check", args = ["--fix"], types_or = ["python", "pyi"] },
   # Run the formatter.
-  { id = "ruff-format" },
+  { id = "ruff-format", types_or = ["python", "pyi", "markdown"] },
+]
+
+[[repos]]
+repo = "https://github.com/astral-sh/ty-pre-commit"
+rev = "v0.0.90"
+hooks = [
+  { id = "ty", types_or = ["python", "pyi"] },
 ]
 
 [[repos]]
 repo = "local"
 hooks = [
-  {
-    id = "ty-check",
-    name = "ty check",
-    entry = "uv run ty check",
-    language = "system",
-    pass_filenames = false,
-    always_run = true
-  },
   {
     id = "pytest",
     name = "pytest",
