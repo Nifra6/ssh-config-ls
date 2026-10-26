@@ -17,7 +17,7 @@ with a CLI formatter.
 
 <div class="grid cards" markdown> <!-- rumdl-disable-line no-inline-html -->
 
--   :lucide-package-open:{ .lg .middle } __Easy installation__
+-   :lucide-package-open: __Easy installation__
 
     ---
 
@@ -25,7 +25,7 @@ with a CLI formatter.
 
     [:octicons-arrow-right-24: Download sshls](installation)
 
--   :lucide-plug:{ .lg .middle } __Integration with editors__
+-   :lucide-plug: __Integration with editors__
 
     ---
 
