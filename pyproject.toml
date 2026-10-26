@@ -29,7 +29,6 @@ sshls = "ssh_config_ls.cli:app"
 
 [dependency-groups]
 dev = [
-  "pdoc>=16.0.0",
   "pytest>=9.0.3",
   "ruff>=0.15.14",
   "ty>=0.0.40",
@@ -37,7 +36,7 @@ dev = [
 ]
 
 [build-system]
-requires = ["uv_build>=0.11.15,<0.12.0"]
+requires = ["uv_build>=0.13.5,<0.14"]
 build-backend = "uv_build"
 
 [tool.pytest]
@@ -55,6 +54,7 @@ ignore = [
   "FIX",  # Editors should highlight those, but dev notes mustn't block commit
   "TD",  # TODO/FIXME tracking overkill for solo project
   "COM812",  # Ruff formats trailing commas, so redundant
+  # TODO: Remove when upgrading to Python 3.15
   "PLC0415",  # Imports inside functions needed until Python supports lazy imports natively
 ]
 
