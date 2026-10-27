@@ -4,7 +4,7 @@ from importlib.metadata import version
 
 from lsprotocol import types
 from pygls.lsp.server import LanguageServer
-from pygls.workspace import TextDocument
+lazy from pygls.workspace import TextDocument
 
 from ssh_config_ls.completion import get_completion
 from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR, format_tree

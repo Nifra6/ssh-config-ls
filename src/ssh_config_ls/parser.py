@@ -1,8 +1,8 @@
 """Construct a syntax tree from the tokens of an SSH config."""
 
-from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Final
+lazy from collections.abc import Sequence
 
 from ssh_config_ls.keywords import Keyword
 from ssh_config_ls.lexer import KeywordArgToken, LineToken

@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.10.2] - 2026-10-27
 
 ### Added
 
@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated to Python 3.15, which is now the minimum supported version.
+- Use `lazy` import keyword instead of importing within CLI function.
 - Ensure all URLs use HTTPS.
 - Update [prek] hooks and dev dependencies.
 - Use the official [ty] [prek] hook instead of a local hook.
@@ -241,7 +243,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A tokenizer (or lexer) with the `tokenize` function, using keywords described in the `Keyword` StrEnum.
 - Tests for the tokenizer.
 
-[unreleased]: https://gitlab.com/nifra/ssh-config-ls/-/compare/v0.10.1...main
+[unreleased]: https://gitlab.com/nifra/ssh-config-ls/-/compare/v0.10.2...main
+[0.10.2]: https://gitlab.com/nifra/ssh-config-ls/-/compare/v0.10.1...v0.10.2
 [0.10.1]: https://gitlab.com/nifra/ssh-config-ls/-/compare/v0.10.0...v0.10.1
 [0.10.0]: https://gitlab.com/nifra/ssh-config-ls/-/compare/v0.9.1...v0.10.0
 [0.9.1]: https://gitlab.com/nifra/ssh-config-ls/-/compare/v0.9.0...v0.9.1

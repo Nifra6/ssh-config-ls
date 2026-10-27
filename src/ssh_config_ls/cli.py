@@ -1,15 +1,19 @@
 """CLI of SSH-config-ls."""
 
-from pathlib import Path
 from typing import Annotated
+lazy from pathlib import Path
 
 import typer
-from rich import print as rich_print
+lazy from rich import print as rich_print
 
-from ssh_config_ls import __version__
-from ssh_config_ls.exceptions import SSHConfigError
 from ssh_config_ls.formatter import DEFAULT_INDENT, DEFAULT_SEPARATOR
 from ssh_config_ls.parser import DEFAULT_SORT
+lazy from ssh_config_ls import __version__
+lazy from ssh_config_ls.exceptions import SSHConfigError
+lazy from ssh_config_ls.formatter import format_tree
+lazy from ssh_config_ls.lexer import tokenize
+lazy from ssh_config_ls.lsp import server
+lazy from ssh_config_ls.parser import parse
 
 # ------------------------------------------------------------
 # APPLICATION
@@ -41,10 +45,6 @@ def cli_format_config(
     ] = DEFAULT_SORT,
 ) -> None:
     """Format an SSH config file."""
-    from ssh_config_ls.formatter import format_tree
-    from ssh_config_ls.lexer import tokenize
-    from ssh_config_ls.parser import parse
-
     formatted_files = 0
     unchanged_files = 0
     for file in files:
@@ -85,8 +85,6 @@ def cli_format_config(
 @app.command(name="server")
 def cli_start_server() -> None:
     """Start the SSH config language server."""
-    from ssh_config_ls.lsp import server
-
     server.start_io()
 
 

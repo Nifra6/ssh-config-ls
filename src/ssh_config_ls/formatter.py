@@ -1,9 +1,9 @@
 """Write a formatted SSH config from a syntax tree."""
 
 import re
-from collections.abc import Sequence
 from functools import partial
 from typing import Final
+lazy from collections.abc import Sequence
 
 from ssh_config_ls.keywords import Keyword
 from ssh_config_ls.lexer import KeywordArgToken
