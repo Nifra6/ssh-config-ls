@@ -11,11 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add a changelog using the [Keep a Changelog] format.
+- Add a changelog following the [Keep a Changelog] format.
+- Add a configuration doc section for the language server settings.
+- Add keywords to the package metadata.
+- Document the `sshconfig` filetype in the Neovim integration page.
+
+### Changed
+
+- Ensure all URLs use HTTPS.
+- Update [prek] hooks and dev dependencies.
+- Use the official [ty] [prek] hook instead of a local hook.
+- README intro have been cleaned.
 
 ### Security
 
-- The [uv] build system has been updated to 0.13.5, fixing the
+- Update [uv] to 0.13.5, fixing the
   [eMudhra intermediate CA compromise](https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576).
 
 ## [0.10.1] - 2026-08-16

@@ -10,11 +10,8 @@ repo_name = "nifra/ssh-config-ls"
 
 nav = [
   { "Home" = "index.md" },
-  { "Get started" = [
-    "installation.md",
-    "editors.md",
-  ] },
-  { "Usage" = ["cli.md"] },
+  { "Get started" = ["installation.md", "editors.md"] },
+  { "Usage" = ["configuration.md", "cli.md"] },
   "changelog.md"
 ]
 
